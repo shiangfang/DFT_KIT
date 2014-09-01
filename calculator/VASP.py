@@ -48,11 +48,11 @@ class calculator_VASP(calculator.calculator):
     
     def run_main(self):
         if self.run_vasp_mode==1:
-            env_parm.run_vasp_ncl()
+            env_parm.run_vasp_ncl(self.dft_job.job_mamanger_mode)
         elif self.run_vasp_mode==2:
-            env_parm.run_vasp_gamma()
+            env_parm.run_vasp_gamma(self.dft_job.job_mamanger_mode)
         else:
-            env_parm.run_vasp_std()
+            env_parm.run_vasp_std(self.dft_job.job_mamanger_mode)
             
     def generate_files(self):
         #INCAR, KPOINTS, POSCAR, and copy user-defined files

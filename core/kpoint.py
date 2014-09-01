@@ -12,8 +12,8 @@ class kpoint:
         self.kmode=mode
         #mode 0
         #type 0: M-Horst, type 1: Gamma type
-        self.kgridtype=0
-        self.kgrid=np.array([10,10,10])
+        self.kgridtype=1
+        self.kgrid=np.array([11,11,11])
         self.kgrid_shift=np.array([0.0,0.0,0.0])
         self.rec_coordinate=True
         

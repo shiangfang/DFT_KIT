@@ -32,6 +32,7 @@ class job:
             self.main_dir=self.root_dir
             self.all_dir.append(self.main_dir)
         self.common_dir=''
+        self.job_mamanger_mode=False
             
         #include prefix, filename, etc.
         self.sys_info={'description':'DFT simulation with DFT_KIT',
@@ -39,8 +40,12 @@ class job:
                        'qes_fname':'',
                        'siesta_prefix':'',
                        'wan90_seedname':''}
-    def set_common_dir(self,dir_name):
-        self.common_dir=self.root_dir+dir_name+'/'
+    def set_job_manager_mode(self,mode):
+        self.job_mamanger_mode=mode
+    def set_temp_dir(self,dir_name):
+        self.temp_dir=self.root_dir+dir_name+'/'
+    def set_common_dir(self,full_dir):
+        self.common_dir=full_dir
     def copy_from_common(self,fname):
         shutil.copy(self.common_dir+fname,self.main_dir)
     def copy_to_common(self,fname):

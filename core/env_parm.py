@@ -13,23 +13,34 @@ vasp_std_path=''
 vasp_complex_path=''
 vasp_gamma_path=''
 vasp_pseudo_dir='/home1/03051/sfang/Pseudo_Potential/VASP/'
-def run_vasp_std():
-    cmd='/home1/03051/sfang/VASP/bin/vasp533_std_MDVDW'
+def run_vasp_std(jm_mode):
+    if jm_mode:
+        cmd='ibrun /home1/03051/sfang/VASP/bin/vasp533_std_MDVDW'
+    else:
+        cmd='/home1/03051/sfang/VASP/bin/vasp533_std_MDVDW'
     print('run command: '+cmd+'\n')
     os.system(cmd)
     
-def run_vasp_ncl():
-    cmd='/home1/03051/sfang/VASP/bin/vasp533_ncl_MDVDW'
+def run_vasp_ncl(jm_mode):
+    if jm_mode:
+        cmd='ibrun /home1/03051/sfang/VASP/bin/vasp533_ncl_MDVDW'
+    else:
+        cmd='/home1/03051/sfang/VASP/bin/vasp533_ncl_MDVDW'
     print('run command: '+cmd+'\n')
     os.system(cmd)
 
-def run_vasp_gamma():
-    cmd='/home1/03051/sfang/VASP/bin/vasp533_gamma_MDVDW'
+def run_vasp_gamma(jm_mode):
+    if jm_mode:
+        cmd='ibrun /home1/03051/sfang/VASP/bin/vasp533_gamma_MDVDW'
+    else:
+        cmd='/home1/03051/sfang/VASP/bin/vasp533_gamma_MDVDW'
     print('run command: '+cmd+'\n')
     os.system(cmd)
 
 #QESPRESSO
 qespresso_pseudo_dir='/home1/03051/sfang/Pseudo_Potential/QESPRESSO/'
+virtualxcmd='/opt/apps/intel13/mvapich2_1_9/espresso/5.0.3/upftools/virtual.x '
+
 def run_qespresso(f_in,f_out):
     os.system('pw.x <  ' + f_in + ' > ' + f_out)
 

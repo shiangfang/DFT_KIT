@@ -19,7 +19,7 @@ test_job=job.job(subdir=True)
 test_kgrid=kpoint.kpoint()
 test_crystal=slab_surface_rhom.Rhom_trigonal_surface(bismuth_antimony.Bi_exp,3,2,length_unit=1.0)
 test_calc=VASP.calculator_VASP(False,test_job,test_crystal,test_kgrid,scheme=0)
-test_calc.load_parm(False, bismuth_antimony.Bi_vasp_clab_scf)
+test_calc.load_parm(False, bismuth_antimony.Bi_vasp_slab_scf)
 test_calc.run_calculation()
 
 
