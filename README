@@ -1,4 +1,12 @@
 # Project: Density Function Theory simulation tool scripts collection
 # August 2014
+# 
+# Author : Shiang Fang 
+# Contact: shiangfang913@gmail.com
+
+# The Python script collection is intended to create the simulation 
+# environment for running (eps. large-scale) DFT calculations.
+# The principle of design in mind is to have the common data type to
+# make the maintenance easier and more efficient.
 
 

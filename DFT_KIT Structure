@@ -26,19 +26,21 @@ script.py
 ==========================================================
 # DFT_KIT Modules for specific applications
 
+dft_cmdtool.py
 crystal_structure.py
 slab_surface_rhom.py
 wire_rhom.py
 
-
 ==========================================================
 # DFT_KIT Modules for specific process and application
 
-dft_cmdtool.py
+(VASP/QESPRESSO/SIESTA/WANNIER90 calculations)
 
 
 ==========================================================
 # DFT_KIT Modules for bridging programs and interface
 
 interface.py
+interface_script.py
+
 

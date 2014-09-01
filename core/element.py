@@ -165,32 +165,6 @@ No_r=element('No',259,102,102)
 Lr_r=element('Lr',260,103,103) 
 
 
-#used for research
-
-
-# Antimony
-#Phys. Rev. 141, 562
-Sb_exp_1={'lattice_constant':4.489,'angle':(57.0+14.0/60.0)*np.pi/180.0,'rhom_u':0.2336}
-#Phys Rev. B 41,11827
-Sb_exp_2={'lattice_constant':4.4898,'angle':(57.233)*np.pi/180.0,'rhom_u':0.23362}
-
-Sb=element('Sb',121.760,51,5,vasp_pot='Sb',qes_pot='')
-Sb_d=element('Sb',121.760,51,15,vasp_pot='Sb_d',qes_pot='')
-
-# Bismuth
-#experimental value at 4.2K cf. PRB 56, 6620. ->careful about the units a.u. vs Angstron
-# Phys. Rev. 166, 643
-Bi_exp_1={'lattice_constant':4.7212,'angle':(57.0+19.0/60.0)*np.pi/180.0,'rhom_u':0.23407}
-#Phys Rev. B 41,11827
-Bi_exp_2={'lattice_constant':4.7236,'angle':(57.35)*np.pi/180.0,'rhom_u':0.23407}
-
-Bi_dft_1={'lattice_constant':4.7973,'angle':(53.0+56.0/60.0)*np.pi/180.0,'rhom_u':0.2348} #RMM-IIS
-Bi_dft_2={'lattice_constant':4.7827,'angle':(56.0+17.0/60.0)*np.pi/180.0,'rhom_u':0.2351} #RMM-IIS SCAN
-Bi_dft_3={'lattice_constant':4.8038,'angle':(53.0+36.0/60.0)*np.pi/180.0,'rhom_u':0.2347} #CONJ-GRAD
-
-
-Bi_exp=element('Bi',208.9804,83,5,vasp_pot='Bi',qes_pot='Bi.UPF',rhom_length=4.7236,angle=1.0009,rhom_u=0.23407)
-Bi_d=element('Bi',208.9804,83,15,vasp_pot='Bi_d',qes_pot='')
 
 C=element('C',12.011,6,4,vasp_pot='C')
 

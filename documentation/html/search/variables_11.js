@@ -1,0 +1,22 @@
+var searchData=
+[
+  ['sb',['Sb',['../namespace_d_f_t___k_i_t_1_1apps_1_1bismuth__antimony.html#a93eb1699becde1ccbaea30f9f2a83c48',1,'DFT_KIT::apps::bismuth_antimony']]],
+  ['sb_5fd',['Sb_d',['../namespace_d_f_t___k_i_t_1_1apps_1_1bismuth__antimony.html#a98b6587f573c187c59bed3eb7ba473ec',1,'DFT_KIT::apps::bismuth_antimony']]],
+  ['sb_5fexp_5f1',['Sb_exp_1',['../namespace_d_f_t___k_i_t_1_1apps_1_1bismuth__antimony.html#aa1abaca0360ca74cc7aff767b2f8b339',1,'DFT_KIT::apps::bismuth_antimony']]],
+  ['sb_5fexp_5f2',['Sb_exp_2',['../namespace_d_f_t___k_i_t_1_1apps_1_1bismuth__antimony.html#a241f6ef77b95d1682e324b5c0e2ef2e9',1,'DFT_KIT::apps::bismuth_antimony']]],
+  ['sb_5fqespresso_5fnscf_5fsoi',['Sb_qespresso_nscf_soi',['../namespace_d_f_t___k_i_t_1_1apps_1_1bismuth__antimony.html#a59fa5c238b4d21bbc0313b00f42bbfe9',1,'DFT_KIT::apps::bismuth_antimony']]],
+  ['sb_5fqespresso_5fscf',['Sb_qespresso_scf',['../namespace_d_f_t___k_i_t_1_1apps_1_1bismuth__antimony.html#a0e0f7c4aa8d0742ba96eaa32092c4d38',1,'DFT_KIT::apps::bismuth_antimony']]],
+  ['sb_5fvasp_5fnscf_5fsoi',['Sb_vasp_nscf_soi',['../namespace_d_f_t___k_i_t_1_1apps_1_1bismuth__antimony.html#aaf0784cd6faa22be296849a9edac5b29',1,'DFT_KIT::apps::bismuth_antimony']]],
+  ['sb_5fvasp_5fscf',['Sb_vasp_scf',['../namespace_d_f_t___k_i_t_1_1apps_1_1bismuth__antimony.html#ac29eda409a16938d88021a96729db286',1,'DFT_KIT::apps::bismuth_antimony']]],
+  ['sb_5fwannier90',['Sb_wannier90',['../namespace_d_f_t___k_i_t_1_1apps_1_1bismuth__antimony.html#a0ea685695e01c80f5dce15e6982ed14d',1,'DFT_KIT::apps::bismuth_antimony']]],
+  ['scriptfile',['scriptfile',['../namespace_d_f_t___k_i_t_1_1apps_1_1dft__cmdtool.html#ad9689f4893a4dde9249d301ef1d932e0',1,'DFT_KIT::apps::dft_cmdtool']]],
+  ['scriptmode',['scriptmode',['../class_d_f_t___k_i_t_1_1core_1_1job_1_1job.html#adab9e4d01f4efc42cff4c8db7571c9d0',1,'DFT_KIT::core::job::job']]],
+  ['sets',['sets',['../class_d_f_t___k_i_t_1_1core_1_1general__tool_1_1segments.html#a64d6f15485f3da291d97112c2ba36def',1,'DFT_KIT::core::general_tool::segments']]],
+  ['sie_5fflags',['SIE_flags',['../namespace_d_f_t___k_i_t_1_1calculator_1_1_s_i_e_s_t_a.html#af058c84c65fdd8bc16fb661c1d552152',1,'DFT_KIT.calculator.SIESTA.SIE_flags()'],['../namespacetest.html#ad3de7ab396cc90f5621f1b639747426c',1,'test.SIE_flags()']]],
+  ['siesta_5fflags',['SIESTA_flags',['../namespace_d_f_t___k_i_t_1_1calculator_1_1_s_i_e_s_t_a.html#ae83e5ef1b4c41f4272ed134b22f6f3c9',1,'DFT_KIT::calculator::SIESTA']]],
+  ['subdir',['subdir',['../class_d_f_t___k_i_t_1_1core_1_1job_1_1job.html#ac7c9c09824d5c150b099515aff786133',1,'DFT_KIT::core::job::job']]],
+  ['subnum',['subnum',['../class_d_f_t___k_i_t_1_1core_1_1general__tool_1_1segments.html#a31cec9678be9764616990406e3056d9a',1,'DFT_KIT::core::general_tool::segments']]],
+  ['symbol',['symbol',['../class_d_f_t___k_i_t_1_1core_1_1element_1_1element.html#ab2919368378ec5a3c88f561701437ca0',1,'DFT_KIT::core::element::element']]],
+  ['sys_5finfo',['sys_info',['../class_d_f_t___k_i_t_1_1core_1_1job_1_1job.html#a7d937c671c8469b64be7d4b29ed0e7b8',1,'DFT_KIT::core::job::job']]],
+  ['system',['system',['../class_d_f_t___k_i_t_1_1core_1_1job_1_1job.html#a0f24589a9b46619f6b1aa898232b2fe1',1,'DFT_KIT::core::job::job']]]
+];

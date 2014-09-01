@@ -14,10 +14,11 @@ import xml.etree.ElementTree as ET
 from DFT_KIT.core import general_tool
 from DFT_KIT.core import env_parm
 from DFT_KIT.core import calculator
+from DFT_KIT.interface import interface
 
 VASP_incar_flags=['NGX','NGY','NGZ','NGXF','NGYF' ,'NGZF' ,'NBANDS','NBLK','NWRITE', 
-'ISTART' ,'ICHARG','ISPIN' ,'MAGMOM','INIWAV','ENCUT' ,'PREC','NELM', 
-'NELMIN' ,'NELMDL','EDIFF','EDIFFG','NSW','NBLOCK','KBLOCK','IBRION', 
+'ISTART' ,'ICHARG','ISPIN' ,'INIWAV','ENCUT' ,'PREC','NELM', 'LSORBIT', 'GGA_COMPAT',
+'NELMIN' ,'NELMDL','EDIFF','EDIFFG','NSW','NBLOCK','KBLOCK','IBRION', 'SAXIS', 'LMAXMIX',
 'ISIF','IWAVPR','ISYM','SYMPREC' ,'LCORR','POTIM','TEBEG','TEEND', 
 'SMASS','NPACO','APACO','POMASS','ZVAL','RWIGS','NELECT','NUPDOWN', 
 'EMIN','EMAX','ISMEAR','SIGMA','ALGO','IALGO','LREAL','ROPT','GGA','VOSKOWN','DIPOL', 
@@ -96,6 +97,15 @@ class calculator_VASP(calculator.calculator):
             file_potcar.close()
     def vasp_generate_incar(self,f_):
         f_.write('SYSTEM = ' + self.dft_job.system + '\n')
+        
+        if 'MAGMOM' in self.parms:
+            if self.parms['MAGMOM'] == True:
+                f_.write('MAGMOM = ')
+                for group in self.crystal.basis_atom_groups.keys():
+                    for atom in self.crystal.basis_atom_groups[group]:
+                        f_.write(general_tool.vec_to_str(atom.get_magmom())+'  ')
+                f_.write('\n')
+        
         for ind_key in self.parms:
             if ind_key in VASP_incar_flags:
                 f_.write(ind_key+' = '+self.parms[ind_key]+ '\n')
@@ -142,7 +152,7 @@ class calculator_VASP(calculator.calculator):
                 f_.write('K-Points with Auto-mesh(Gamma)\n 0\nGamma\n')
                 f_.write(' ' + general_tool.vec_to_str(self.kgrid.kgrid)+'\n')
                 f_.write(' '+general_tool.vec_to_str(self.kgrid.kgrid_shift))
-        elif self.kgrid.kmode==2:
+        elif self.kgrid.kmode==1:
             f_.write('K-Points for Bandstructure with Linear mode\n')
             f_.write(' '+str(self.kgrid.num_kscan)+'\nLine-mode\n')
             if self.kgrid.rec_coordinate:
@@ -153,7 +163,7 @@ class calculator_VASP(calculator.calculator):
                 f_.write(general_tool.vec_to_str(self.kgrid.kscan[ind])+'\n')
                 if ind%2 ==1:
                     f_.write('\n')
-        elif self.kgrid.kmode==3:
+        elif self.kgrid.kmode==2:
             f_.write('K-Points manual mode\n')
             f_.write(' ' + str(len(self.kgrid.klist))+'\n')
             if self.kgrid.rec_coordinate:
@@ -233,6 +243,8 @@ class calculator_VASP(calculator.calculator):
 #Post Process tools for VASP
     def post_process(self):
         pass
+    
+
 
     def vasp_load_calculation_xml(self,root_cals,data_):
         root_cals1=root_cals.findall("scstep")
@@ -409,32 +421,32 @@ class calculator_VASP(calculator.calculator):
         tmp=root_pars.find(".//*[@name='LBERRY']")
         self.vasp_vars['LBERRY']=tmp.text
     
-        self.vasp_load_from_xml(root_pars,".//*[@name='general']",self.vasp_vars)
-        self.vasp_load_from_xml(root_pars,".//*[@name='electronic']",self.vasp_vars)
-        self.vasp_load_from_xml(root_pars,".//*[@name='electronic smearing']",self.vasp_vars)
-        self.vasp_load_from_xml(root_pars,".//*[@name='electronic projectors']",self.vasp_vars)
-        self.vasp_load_from_xml(root_pars,".//*[@name='electronic startup']",self.vasp_vars)
-        self.vasp_load_from_xml(root_pars,".//*[@name='electronic spin']",self.vasp_vars) 
-        self.vasp_load_from_xml(root_pars,".//*[@name='electronic exchange-correlation']",self.vasp_vars)
-        self.vasp_load_from_xml(root_pars,".//*[@name='electronic convergence']",self.vasp_vars) 
-        self.vasp_load_from_xml(root_pars,".//*[@name='electronic convergence detail']",self.vasp_vars)
-        self.vasp_load_from_xml(root_pars,".//*[@name='electronic mixer']",self.vasp_vars) 
-        self.vasp_load_from_xml(root_pars,".//*[@name='electronic mixer details']",self.vasp_vars)
-        self.vasp_load_from_xml(root_pars,".//*[@name='electronic dipolcorrection']",self.vasp_vars)
-        self.vasp_load_from_xml(root_pars,".//*[@name='grids']",self.vasp_vars)
-        self.vasp_load_from_xml(root_pars,".//*[@name='ionic']",self.vasp_vars) 
-        self.vasp_load_from_xml(root_pars,".//*[@name='ionic md']",self.vasp_vars)
-        self.vasp_load_from_xml(root_pars,".//*[@name='symmetry']",self.vasp_vars)
-        self.vasp_load_from_xml(root_pars,".//*[@name='dos']",self.vasp_vars) 
-        self.vasp_load_from_xml(root_pars,".//*[@name='writing']",self.vasp_vars)
-        self.vasp_load_from_xml(root_pars,".//*[@name='performance']",self.vasp_vars)
-        self.vasp_load_from_xml(root_pars,".//*[@name='miscellaneous']",self.vasp_vars)
-        self.vasp_load_from_xml(root_pars,".//*[@name='electronic exchange-correlation']",self.vasp_vars)
-        self.vasp_load_from_xml(root_pars,".//*[@name='vdW DFT']",self.vasp_vars)
-        self.vasp_load_from_xml(root_pars,".//*[@name='model GW']",self.vasp_vars)
-        self.vasp_load_from_xml(root_pars,".//*[@name='linear response parameters']",self.vasp_vars)
-        self.vasp_load_from_xml(root_pars,".//*[@name='orbital magnetization']",self.vasp_vars)
-        self.vasp_load_from_xml(root_pars,".//*[@name='response functions']",self.vasp_vars)
+        interface.load_from_xml(root_pars,".//*[@name='general']",self.vasp_vars)
+        interface.load_from_xml(root_pars,".//*[@name='electronic']",self.vasp_vars)
+        interface.load_from_xml(root_pars,".//*[@name='electronic smearing']",self.vasp_vars)
+        interface.load_from_xml(root_pars,".//*[@name='electronic projectors']",self.vasp_vars)
+        interface.load_from_xml(root_pars,".//*[@name='electronic startup']",self.vasp_vars)
+        interface.load_from_xml(root_pars,".//*[@name='electronic spin']",self.vasp_vars) 
+        interface.load_from_xml(root_pars,".//*[@name='electronic exchange-correlation']",self.vasp_vars)
+        interface.load_from_xml(root_pars,".//*[@name='electronic convergence']",self.vasp_vars) 
+        interface.load_from_xml(root_pars,".//*[@name='electronic convergence detail']",self.vasp_vars)
+        interface.load_from_xml(root_pars,".//*[@name='electronic mixer']",self.vasp_vars) 
+        interface.load_from_xml(root_pars,".//*[@name='electronic mixer details']",self.vasp_vars)
+        interface.load_from_xml(root_pars,".//*[@name='electronic dipolcorrection']",self.vasp_vars)
+        interface.load_from_xml(root_pars,".//*[@name='grids']",self.vasp_vars)
+        interface.load_from_xml(root_pars,".//*[@name='ionic']",self.vasp_vars) 
+        interface.load_from_xml(root_pars,".//*[@name='ionic md']",self.vasp_vars)
+        interface.load_from_xml(root_pars,".//*[@name='symmetry']",self.vasp_vars)
+        interface.load_from_xml(root_pars,".//*[@name='dos']",self.vasp_vars) 
+        interface.load_from_xml(root_pars,".//*[@name='writing']",self.vasp_vars)
+        interface.load_from_xml(root_pars,".//*[@name='performance']",self.vasp_vars)
+        interface.load_from_xml(root_pars,".//*[@name='miscellaneous']",self.vasp_vars)
+        interface.load_from_xml(root_pars,".//*[@name='electronic exchange-correlation']",self.vasp_vars)
+        interface.load_from_xml(root_pars,".//*[@name='vdW DFT']",self.vasp_vars)
+        interface.load_from_xml(root_pars,".//*[@name='model GW']",self.vasp_vars)
+        interface.load_from_xml(root_pars,".//*[@name='linear response parameters']",self.vasp_vars)
+        interface.load_from_xml(root_pars,".//*[@name='orbital magnetization']",self.vasp_vars)
+        interface.load_from_xml(root_pars,".//*[@name='response functions']",self.vasp_vars)
         
         #atom info
         root_atom=root.find('atominfo')

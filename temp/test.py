@@ -16,3 +16,11 @@ BasisPressure,\
 BlockSize'.split(',')
 print(SIE_flags)
 
+d1=['afdsasdf',3234,5.6,'dasfad']
+for val in d1:
+    print(val)
+
+
+
+
+

@@ -195,6 +195,10 @@ class calculator_QESPRESSO(calculator.calculator):
         f_.close()
         
     def qespresso_postana_xml(self):
+        #for scf result
+        
+        
+        #for band structure
         start_k=1
         end_k=102
         n_bands=40

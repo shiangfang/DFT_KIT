@@ -1,0 +1,99 @@
+\hypertarget{namespace_v_a_s_p__ecutoff__convergence}{\section{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence Namespace Reference}
+\label{namespace_v_a_s_p__ecutoff__convergence}\index{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence@{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence}}
+}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{namespace_v_a_s_p__ecutoff__convergence_a9965ad85793a2cde84cd51cabb5d5a35}{expect\+\_\+num\+\_\+parm} = 1
+\item 
+tuple \hyperlink{namespace_v_a_s_p__ecutoff__convergence_a5370b53a459335c6ec045ad0bb6bd759}{input\+\_\+num\+\_\+parm} = len(sys.\+argv)
+\item 
+list \hyperlink{namespace_v_a_s_p__ecutoff__convergence_a160a76862b3ae963040ff4c3d81d4f19}{input\+\_\+parm} = \mbox{[}$\,$\mbox{]}
+\item 
+tuple \hyperlink{namespace_v_a_s_p__ecutoff__convergence_a6c83348a585fff1e90f3cd6281c53322}{e\+\_\+ind} = int(\hyperlink{namespace_v_a_s_p__ecutoff__convergence_a160a76862b3ae963040ff4c3d81d4f19}{input\+\_\+parm}\mbox{[}0\mbox{]})
+\item 
+tuple \hyperlink{namespace_v_a_s_p__ecutoff__convergence_aeeae920ec4c0b378e7329b859edcbadc}{all\+\_\+es} = np.\+linspace(200,300,6)
+\item 
+list \hyperlink{namespace_v_a_s_p__ecutoff__convergence_adae3249c19422f60c853d15e432a0e40}{e\+\_\+now} = \hyperlink{namespace_v_a_s_p__ecutoff__convergence_aeeae920ec4c0b378e7329b859edcbadc}{all\+\_\+es}\mbox{[}\hyperlink{namespace_v_a_s_p__ecutoff__convergence_a6c83348a585fff1e90f3cd6281c53322}{e\+\_\+ind}\mbox{]}
+\item 
+tuple \hyperlink{namespace_v_a_s_p__ecutoff__convergence_a15e578365428bb2b848493c44550d026}{test\+\_\+job} = job.\+job(subdir=False)
+\item 
+tuple \hyperlink{namespace_v_a_s_p__ecutoff__convergence_a8a9d3a7f5f06ab4f838741c9467dd4f4}{test\+\_\+kgrid} = kpoint.\+kpoint()
+\item 
+tuple \hyperlink{namespace_v_a_s_p__ecutoff__convergence_a92359c3b2568f133a889e58007978055}{test\+\_\+crystal} = crystal\+\_\+structure.\+a7\+\_\+structure(element.\+Bi\+\_\+exp,length\+\_\+unit=1.\+0)
+\item 
+tuple \hyperlink{namespace_v_a_s_p__ecutoff__convergence_a0932f8fc31cc2292875f4747efdb6266}{test\+\_\+calc} = V\+A\+S\+P.\+calculator\+\_\+\+V\+A\+S\+P(False,\hyperlink{namespace_v_a_s_p__ecutoff__convergence_a15e578365428bb2b848493c44550d026}{test\+\_\+job},\hyperlink{namespace_v_a_s_p__ecutoff__convergence_a92359c3b2568f133a889e58007978055}{test\+\_\+crystal},\hyperlink{namespace_v_a_s_p__ecutoff__convergence_a8a9d3a7f5f06ab4f838741c9467dd4f4}{test\+\_\+kgrid},scheme=0,xc='P\+B\+E',E\+N\+C\+U\+T=str(\hyperlink{namespace_v_a_s_p__ecutoff__convergence_adae3249c19422f60c853d15e432a0e40}{e\+\_\+now}))
+\end{DoxyCompactItemize}
+
+
+\subsection{Variable Documentation}
+\hypertarget{namespace_v_a_s_p__ecutoff__convergence_aeeae920ec4c0b378e7329b859edcbadc}{\index{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence@{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence}!all\+\_\+es@{all\+\_\+es}}
+\index{all\+\_\+es@{all\+\_\+es}!V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence@{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence}}
+\subsubsection[{all\+\_\+es}]{\setlength{\rightskip}{0pt plus 5cm}tuple V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence.\+all\+\_\+es = np.\+linspace(200,300,6)}}\label{namespace_v_a_s_p__ecutoff__convergence_aeeae920ec4c0b378e7329b859edcbadc}
+
+
+Definition at line 32 of file V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence.\+py.
+
+\hypertarget{namespace_v_a_s_p__ecutoff__convergence_a6c83348a585fff1e90f3cd6281c53322}{\index{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence@{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence}!e\+\_\+ind@{e\+\_\+ind}}
+\index{e\+\_\+ind@{e\+\_\+ind}!V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence@{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence}}
+\subsubsection[{e\+\_\+ind}]{\setlength{\rightskip}{0pt plus 5cm}tuple V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence.\+e\+\_\+ind = int({\bf input\+\_\+parm}\mbox{[}0\mbox{]})}}\label{namespace_v_a_s_p__ecutoff__convergence_a6c83348a585fff1e90f3cd6281c53322}
+
+
+Definition at line 31 of file V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence.\+py.
+
+\hypertarget{namespace_v_a_s_p__ecutoff__convergence_adae3249c19422f60c853d15e432a0e40}{\index{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence@{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence}!e\+\_\+now@{e\+\_\+now}}
+\index{e\+\_\+now@{e\+\_\+now}!V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence@{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence}}
+\subsubsection[{e\+\_\+now}]{\setlength{\rightskip}{0pt plus 5cm}list V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence.\+e\+\_\+now = {\bf all\+\_\+es}\mbox{[}{\bf e\+\_\+ind}\mbox{]}}}\label{namespace_v_a_s_p__ecutoff__convergence_adae3249c19422f60c853d15e432a0e40}
+
+
+Definition at line 33 of file V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence.\+py.
+
+\hypertarget{namespace_v_a_s_p__ecutoff__convergence_a9965ad85793a2cde84cd51cabb5d5a35}{\index{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence@{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence}!expect\+\_\+num\+\_\+parm@{expect\+\_\+num\+\_\+parm}}
+\index{expect\+\_\+num\+\_\+parm@{expect\+\_\+num\+\_\+parm}!V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence@{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence}}
+\subsubsection[{expect\+\_\+num\+\_\+parm}]{\setlength{\rightskip}{0pt plus 5cm}int V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence.\+expect\+\_\+num\+\_\+parm = 1}}\label{namespace_v_a_s_p__ecutoff__convergence_a9965ad85793a2cde84cd51cabb5d5a35}
+
+
+Definition at line 21 of file V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence.\+py.
+
+\hypertarget{namespace_v_a_s_p__ecutoff__convergence_a5370b53a459335c6ec045ad0bb6bd759}{\index{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence@{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence}!input\+\_\+num\+\_\+parm@{input\+\_\+num\+\_\+parm}}
+\index{input\+\_\+num\+\_\+parm@{input\+\_\+num\+\_\+parm}!V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence@{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence}}
+\subsubsection[{input\+\_\+num\+\_\+parm}]{\setlength{\rightskip}{0pt plus 5cm}tuple V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence.\+input\+\_\+num\+\_\+parm = len(sys.\+argv)}}\label{namespace_v_a_s_p__ecutoff__convergence_a5370b53a459335c6ec045ad0bb6bd759}
+
+
+Definition at line 22 of file V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence.\+py.
+
+\hypertarget{namespace_v_a_s_p__ecutoff__convergence_a160a76862b3ae963040ff4c3d81d4f19}{\index{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence@{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence}!input\+\_\+parm@{input\+\_\+parm}}
+\index{input\+\_\+parm@{input\+\_\+parm}!V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence@{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence}}
+\subsubsection[{input\+\_\+parm}]{\setlength{\rightskip}{0pt plus 5cm}list V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence.\+input\+\_\+parm = \mbox{[}$\,$\mbox{]}}}\label{namespace_v_a_s_p__ecutoff__convergence_a160a76862b3ae963040ff4c3d81d4f19}
+
+
+Definition at line 27 of file V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence.\+py.
+
+\hypertarget{namespace_v_a_s_p__ecutoff__convergence_a0932f8fc31cc2292875f4747efdb6266}{\index{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence@{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence}!test\+\_\+calc@{test\+\_\+calc}}
+\index{test\+\_\+calc@{test\+\_\+calc}!V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence@{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence}}
+\subsubsection[{test\+\_\+calc}]{\setlength{\rightskip}{0pt plus 5cm}tuple V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence.\+test\+\_\+calc = V\+A\+S\+P.\+calculator\+\_\+\+V\+A\+S\+P(False,{\bf test\+\_\+job},{\bf test\+\_\+crystal},{\bf test\+\_\+kgrid},scheme=0,xc='P\+B\+E',E\+N\+C\+U\+T=str({\bf e\+\_\+now}))}}\label{namespace_v_a_s_p__ecutoff__convergence_a0932f8fc31cc2292875f4747efdb6266}
+
+
+Definition at line 38 of file V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence.\+py.
+
+\hypertarget{namespace_v_a_s_p__ecutoff__convergence_a92359c3b2568f133a889e58007978055}{\index{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence@{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence}!test\+\_\+crystal@{test\+\_\+crystal}}
+\index{test\+\_\+crystal@{test\+\_\+crystal}!V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence@{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence}}
+\subsubsection[{test\+\_\+crystal}]{\setlength{\rightskip}{0pt plus 5cm}tuple V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence.\+test\+\_\+crystal = crystal\+\_\+structure.\+a7\+\_\+structure(element.\+Bi\+\_\+exp,length\+\_\+unit=1.\+0)}}\label{namespace_v_a_s_p__ecutoff__convergence_a92359c3b2568f133a889e58007978055}
+
+
+Definition at line 37 of file V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence.\+py.
+
+\hypertarget{namespace_v_a_s_p__ecutoff__convergence_a15e578365428bb2b848493c44550d026}{\index{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence@{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence}!test\+\_\+job@{test\+\_\+job}}
+\index{test\+\_\+job@{test\+\_\+job}!V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence@{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence}}
+\subsubsection[{test\+\_\+job}]{\setlength{\rightskip}{0pt plus 5cm}tuple V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence.\+test\+\_\+job = job.\+job(subdir=False)}}\label{namespace_v_a_s_p__ecutoff__convergence_a15e578365428bb2b848493c44550d026}
+
+
+Definition at line 35 of file V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence.\+py.
+
+\hypertarget{namespace_v_a_s_p__ecutoff__convergence_a8a9d3a7f5f06ab4f838741c9467dd4f4}{\index{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence@{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence}!test\+\_\+kgrid@{test\+\_\+kgrid}}
+\index{test\+\_\+kgrid@{test\+\_\+kgrid}!V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence@{V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence}}
+\subsubsection[{test\+\_\+kgrid}]{\setlength{\rightskip}{0pt plus 5cm}tuple V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence.\+test\+\_\+kgrid = kpoint.\+kpoint()}}\label{namespace_v_a_s_p__ecutoff__convergence_a8a9d3a7f5f06ab4f838741c9467dd4f4}
+
+
+Definition at line 36 of file V\+A\+S\+P\+\_\+ecutoff\+\_\+convergence.\+py.
+

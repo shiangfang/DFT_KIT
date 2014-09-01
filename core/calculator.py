@@ -27,6 +27,7 @@ class calculator:
         self.post_commands=[]
         self.output={}
         self.reset_simulation_data()
+
               
     def run_calculation(self):
         if self.postprocess:

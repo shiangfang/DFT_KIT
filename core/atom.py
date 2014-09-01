@@ -11,11 +11,15 @@ class atom:
     def __init__(self,element,position=np.array([0.0,0.0,0.0]),**parms):
         self.element=copy.copy(element)
         self.position=position
+        self.magmom=np.array([0,0,0])
         self.parms={}
         
         for ind_parm in parms:
             self.parms[ind_parm]=parms[ind_parm]
-      
+    def set_magmom(self,magmom):
+        self.magmom=np.array(magmom)
+    def get_magmom(self):
+        return self.magmom    
     def set_position(self,pos_):
         self.position=pos_
     def get_position(self):

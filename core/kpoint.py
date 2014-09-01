@@ -32,6 +32,16 @@ class kpoint:
         self.kscan.append(kpoint)
     def set_num_kscan(self,num):
         self.num_kscan=num
+    def set_grid_mode(self,grid_):
+        self.kmode=0
+        self.kgrid=grid_    
+    
+    def set_scan_mode(self,num,kpoints):
+        self.kmode=1
+        self.num_kscan=num
+        self.kscan=[]
+        for kpt in kpoints:
+            self.add_kscan_point(kpt)
 
     #mode 2
     def add_klist_point(self,kpoint):

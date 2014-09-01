@@ -1,0 +1,5 @@
+SYSTEM = DFT simulation
+EDIFF = 1E-6
+ICHARG = 2
+ISTART = 0
+ISMEAR = -5

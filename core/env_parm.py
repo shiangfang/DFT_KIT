@@ -14,17 +14,17 @@ vasp_complex_path=''
 vasp_gamma_path=''
 vasp_pseudo_dir='/home1/03051/sfang/Pseudo_Potential/VASP/'
 def run_vasp_std():
-    cmd='ibrun /home1/03051/sfang/VASP/bin/vasp533_std_MDVDW'
+    cmd='/home1/03051/sfang/VASP/bin/vasp533_std_MDVDW'
     print('run command: '+cmd+'\n')
     os.system(cmd)
     
 def run_vasp_ncl():
-    cmd='ibrun /home1/03051/sfang/VASP/bin/vasp533_ncl_MDVDW'
+    cmd='/home1/03051/sfang/VASP/bin/vasp533_ncl_MDVDW'
     print('run command: '+cmd+'\n')
     os.system(cmd)
 
 def run_vasp_gamma():
-    cmd='ibrun /home1/03051/sfang/VASP/bin/vasp533_gamma_MDVDW'
+    cmd='/home1/03051/sfang/VASP/bin/vasp533_gamma_MDVDW'
     print('run command: '+cmd+'\n')
     os.system(cmd)
 

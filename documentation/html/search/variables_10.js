@@ -1,0 +1,11 @@
+var searchData=
+[
+  ['radius',['radius',['../class_d_f_t___k_i_t_1_1apps_1_1wire__rhom_1_1_rhom__trigonal__nanowire.html#ad2f62d13d4541e9c45097aa8bd084fd6',1,'DFT_KIT::apps::wire_rhom::Rhom_trigonal_nanowire']]],
+  ['rec_5fcoordinate',['rec_coordinate',['../class_d_f_t___k_i_t_1_1core_1_1kpoint_1_1kpoint.html#aeb4d70f1f0b809f96a2c19a3f1575c9b',1,'DFT_KIT::core::kpoint::kpoint']]],
+  ['reciprocal_5fvector',['reciprocal_vector',['../class_d_f_t___k_i_t_1_1core_1_1crystal__3_d_1_1crystal__3_d.html#ac792f9a47ced7b38b07d17d55e043d3b',1,'DFT_KIT::core::crystal_3D::crystal_3D']]],
+  ['ref_5fcrystal',['ref_crystal',['../class_d_f_t___k_i_t_1_1apps_1_1slab__surface__rhom_1_1_rhom__trigonal__surface.html#ac8b802d45e21f6b25c3830f69d586af0',1,'DFT_KIT.apps.slab_surface_rhom.Rhom_trigonal_surface.ref_crystal()'],['../class_d_f_t___k_i_t_1_1apps_1_1slab__surface__rhom_1_1_rhom__parallel__trigonal__surface.html#a42ef9900bdc7c47e6a52f6a5fed01e94',1,'DFT_KIT.apps.slab_surface_rhom.Rhom_parallel_trigonal_surface.ref_crystal()'],['../class_d_f_t___k_i_t_1_1apps_1_1wire__rhom_1_1_rhom__trigonal__nanowire.html#a24be6451c8eea10c855b4894e7319e82',1,'DFT_KIT.apps.wire_rhom.Rhom_trigonal_nanowire.ref_crystal()']]],
+  ['rhom_5fconstant',['rhom_constant',['../class_d_f_t___k_i_t_1_1apps_1_1slab__surface__rhom_1_1_rhom__trigonal__surface.html#ad09e487f3439b81b81e1b04b2aece740',1,'DFT_KIT::apps::slab_surface_rhom::Rhom_trigonal_surface']]],
+  ['rhom_5fu',['rhom_u',['../class_d_f_t___k_i_t_1_1apps_1_1slab__surface__rhom_1_1_rhom__trigonal__surface.html#ace9262e8227a0f6d26b7c9f422bd78a7',1,'DFT_KIT::apps::slab_surface_rhom::Rhom_trigonal_surface']]],
+  ['root_5fdir',['root_dir',['../class_d_f_t___k_i_t_1_1core_1_1job_1_1job.html#abb15d70a73681fdcb58f47f8e50dfd27',1,'DFT_KIT.core.job.job.root_dir()'],['../namespace_d_f_t___k_i_t_1_1apps_1_1dft__cmdtool.html#ae64fc152ecc9625928d1b894c9509b63',1,'DFT_KIT.apps.dft_cmdtool.root_dir()'],['../namespacegen__scripts.html#a4107e1299924aa1379f5609bbd7adb0a',1,'gen_scripts.root_dir()']]],
+  ['run_5fvasp_5fmode',['run_vasp_mode',['../class_d_f_t___k_i_t_1_1calculator_1_1_v_a_s_p_1_1calculator___v_a_s_p.html#a8038b8e1bef5a7cb6a06792b0ed46b3e',1,'DFT_KIT::calculator::VASP::calculator_VASP']]]
+];

@@ -2,12 +2,14 @@
 # August 2014
 # Class for controling job running process and maintain necessary folders
 
+# next : savepoint? to restart the calculation
+
 import os
 import sys
 import shutil
 
 class job:
-    def __init__(self,subdir=True,prefix='dft_simulation',system='DFT simulation',description='DFT_KIT tools for simulation',dir_task_prefix='task_',verbosity=True,**parms):
+    def __init__(self,subdir=True,system='DFT simulation',dir_task_prefix='task_',verbosity=True,**parms):
         self.root_dir=os.getcwd()+'/'
         self.subdir=subdir #make subdir structure
         self.all_dir=[]
@@ -20,8 +22,6 @@ class job:
         self.dft_script_cmds=[]
         
         self.system=system
-        self.description=description
-        self.prefix=prefix
         self.parms={}
         for ind_key in parms:
             self.parms[ind_key]=parms[ind_key]
@@ -31,7 +31,26 @@ class job:
         else:
             self.main_dir=self.root_dir
             self.all_dir.append(self.main_dir)
+        self.common_dir=''
             
+        #include prefix, filename, etc.
+        self.sys_info={'description':'DFT simulation with DFT_KIT',
+                       'qes_prefix':'',
+                       'qes_fname':'',
+                       'siesta_prefix':'',
+                       'wan90_seedname':''}
+    def set_common_dir(self,dir_name):
+        self.common_dir=self.root_dir+dir_name+'/'
+    def copy_from_common(self,fname):
+        shutil.copy(self.common_dir+fname,self.main_dir)
+    def copy_to_common(self,fname):
+        shutil.copy(self.main_dir+fname,self.common_dir)
+    def set_sysinfo(self,ind_key,val):
+        self.sys_info[ind_key]=val
+    def get_sysinfo(self,ind_key):
+        return self.sys_info[ind_key]
+    def make_fname_sysinfo(self,ind_key):
+        return self.sys_info[ind_key]+'_'+str(self.count)
         #create temp/postana dir
     def get_maindir(self):
         return self.main_dir
@@ -79,7 +98,6 @@ class job:
         os.chdir(dir_tmp)
         self.main_dir=dir_tmp
         self.count=self.count+1
-    
     def get_task_dirname(self,task_):
         return self.task_prefix+str(task_)
         
@@ -97,8 +115,6 @@ class job:
             self.all_dir.append(self.main_dir)
     def make_fname(self,prefix):
         return prefix+'_'+str(self.count)
-
-
     def load_script(self,scriptfile):
         with open(scriptfile) as fp:
             for line in fp:
