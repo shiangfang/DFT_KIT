@@ -13,22 +13,19 @@ import os
 import shutil
 
 from DFT_KIT.core import env_parm
+from DFT_KIT.interface import interface_script
 
-if len(sys.argv)< 4:
-    print("ERROR: too few input parameter")
-    exit()
-
-job_script=sys.argv[2]
-num_parm=int(sys.argv[3])
-
-if sys.argv[1]=='0':
+input_parm=interface_script.init_simulation(3)
+job_script=input_parm[1]
+num_parm=int(input_parm[2])
+if input_parm[0]=='0':
     job_submit=False
 else:
     job_submit=True
 
 
 root_dir=os.getcwd()+'/'
-dir_prefix='task'
+dir_prefix='DFT_JOB'
 job_name='DFT_KIT_JOB'
 num_cpu=2
 job_queue="normal"
@@ -65,7 +62,7 @@ for ind in range(0,num_parm):
     
     #the main script!
     f_.write("# run the main script\n")
-    f_.write("python  " + job_script + " "+ str(ind))
+    f_.write("python  " + job_script + " "+ str(ind) +' ' +'-cpu='+str(num_cpu))
     f_.write("\n\n")
     f_.close()
 

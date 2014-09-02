@@ -66,7 +66,7 @@ class calculator_QESPRESSO(calculator.calculator):
             
     
     def run_main(self):
-        
+        env_parm.run_qes_pwx(self.dft_job.sys_info['qes_fname']+'.in', self.dft_job.sys_info['qes_fname']+'.out')
         if self.wannier90_analysis:
             self.run_wannier()
     
@@ -86,10 +86,10 @@ class calculator_QESPRESSO(calculator.calculator):
         
     def generate_files(self):
         #control section
-        f_=open('qes.scf.in','w')
+        f_=open(self.dft_job.sys_info['qes_fname']+'.in','w')
         
         f_.write(' &control\n')
-        f_.write("   prefix = '" + self.dft_job.prefix + "',\n")
+        f_.write("   prefix = '" + self.dft_job.sys_info['qes_prefix'] + "',\n")
         f_.write("   outdir = '" + self.dft_job.get_maindir() +"',\n")
         f_.write("   pseudo_dir = '" + env_parm.qespresso_pseudo_dir +"',\n")
         for ind_key in self.parms:

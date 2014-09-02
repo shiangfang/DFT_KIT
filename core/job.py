@@ -33,13 +33,22 @@ class job:
             self.all_dir.append(self.main_dir)
         self.common_dir=''
         self.job_mamanger_mode=False
+        self.opt_parm={'cpu':1}
             
         #include prefix, filename, etc.
         self.sys_info={'description':'DFT simulation with DFT_KIT',
-                       'qes_prefix':'',
-                       'qes_fname':'',
-                       'siesta_prefix':'',
-                       'wan90_seedname':''}
+                       'qes_prefix':'qespresso',
+                       'qes_fname':'qespresso',
+                       'siesta_prefix':'siesta',
+                       'wan90_seedname':'wan90'}
+        
+    def load_opt_parm(self,opt_parm):    
+        for ind_key in opt_parm:
+            if ind_key=='cpu':
+                self.opt_parm['cpu']=int(opt_parm['cpu'])
+            else:
+                self.opt_parm[ind_key]=opt_parm[ind_key]
+    
     def set_job_manager_mode(self,mode):
         self.job_mamanger_mode=mode
     def set_temp_dir(self,dir_name):

@@ -11,7 +11,7 @@ from DFT_KIT.calculator import VASP, QESPRESSO, Wannier90
 from DFT_KIT.apps import crystal_structure, bismuth_antimony
 from DFT_KIT.interface import interface_script
 
-input_parm=interface_script.init_simulation(0)
+[input_parm,opt_parm]=interface_script.init_simulation(0)
 
 test_job=job.job(subdir=True)
 

@@ -28,10 +28,20 @@ def init_simulation(expect_num_parm):
     input_parm=[]
     for ind in range(1,expect_num_parm+1):
         input_parm.append(sys.argv[ind])
+        
+    opt_parm={}
+    if input_num_parm > expect_num_parm+1:
+        for ind in range(expect_num_parm+1,input_num_parm):
+            tmp=sys.argv[ind]
+            if tmp[0]=='-' and tmp.find('-') > -1:
+                tmp=tmp[1:]
+                tmp=tmp.split('=')
+                opt_parm[tmp[0]]=tmp[1]
+        
 
     print("Prepare program with input parameters:")
     print(input_parm)
-    return input_parm
+    return [input_parm,opt_parm]
 
 
 

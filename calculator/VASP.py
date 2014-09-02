@@ -2,6 +2,7 @@
 # August 2014
 # Class for calculation with VASP
 
+import numpy as np
 import os
 import shutil
 import pickle
@@ -19,11 +20,11 @@ from DFT_KIT.interface import interface
 VASP_incar_flags=['NGX','NGY','NGZ','NGXF','NGYF' ,'NGZF' ,'NBANDS','NBLK','NWRITE', 
 'ISTART' ,'ICHARG','ISPIN' ,'INIWAV','ENCUT' ,'PREC','NELM', 'LSORBIT', 'GGA_COMPAT',
 'NELMIN' ,'NELMDL','EDIFF','EDIFFG','NSW','NBLOCK','KBLOCK','IBRION', 'SAXIS', 'LMAXMIX',
-'ISIF','IWAVPR','ISYM','SYMPREC' ,'LCORR','POTIM','TEBEG','TEEND', 
+'ISIF','IWAVPR','ISYM','SYMPREC' ,'LCORR','POTIM','TEBEG','TEEND','AMIN',
 'SMASS','NPACO','APACO','POMASS','ZVAL','RWIGS','NELECT','NUPDOWN', 
 'EMIN','EMAX','ISMEAR','SIGMA','ALGO','IALGO','LREAL','ROPT','GGA','VOSKOWN','DIPOL', 
 'AMIX','BMIX','WEIMIN','EBREAK','DEPER','TIME','LWAVE','LCHARG' ,'LVTOT','LVHAR', 
-'LELF','LORBIT','NPAR','LSCALAPACK','LSCALU','LASYNC']
+'LELF','LORBIT','LSCALAPACK','LSCALU','LASYNC']
 
 VASP_kpoints_flags=[]
 
@@ -98,6 +99,11 @@ class calculator_VASP(calculator.calculator):
     def vasp_generate_incar(self,f_):
         f_.write('SYSTEM = ' + self.dft_job.system + '\n')
         
+        if 'NPAR' in self.parms:
+            if self.parms['NPAR'] !='0':
+                f_.write('NPAR = ' +self.parms['NPAR']+'\n')
+            else:
+                f_.write('NPAR = ' +int(np.sqrt(int(self.dft_job.opt_parm['cpu'])))+'\n')   
         if 'MAGMOM' in self.parms:
             if self.parms['MAGMOM'] == True:
                 f_.write('MAGMOM = ')

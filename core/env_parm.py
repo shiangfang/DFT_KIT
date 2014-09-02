@@ -41,7 +41,7 @@ def run_vasp_gamma(jm_mode):
 qespresso_pseudo_dir='/home1/03051/sfang/Pseudo_Potential/QESPRESSO/'
 virtualxcmd='/opt/apps/intel13/mvapich2_1_9/espresso/5.0.3/upftools/virtual.x '
 
-def run_qespresso(f_in,f_out):
+def run_qes_pwx(f_in,f_out):
     os.system('pw.x <  ' + f_in + ' > ' + f_out)
 
 #pw2wannier90
