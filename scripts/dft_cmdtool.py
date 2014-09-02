@@ -2,15 +2,10 @@
 # August 2014
 # Class for the Command tool collection
 
-
-
 import numpy as np
 import pickle
 import sys
 import os
-
-#environmental settings note here
-sys.path.append('/n/home09/sfang/bin/lib')
 
 from DFT_KIT.core import job, kpoint, element, crystal_3D
 from DFT_KIT.calculator import VASP, QESPRESSO, Wannier90

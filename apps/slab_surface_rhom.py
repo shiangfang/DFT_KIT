@@ -36,8 +36,8 @@ class Rhom_trigonal_surface(crystal_3D.crystal_3D):
         self.angle=angle
         self.rhom_u=rhom_u
         
-        self.set_prim_vec(0,ref_a1-ref_a2)
-        self.set_prim_vec(1,ref_a1-ref_a3)
+        self.set_prim_vec(0,ref_a2-ref_a1)
+        self.set_prim_vec(1,ref_a3-ref_a1)
         self.set_prim_vec(2,(ref_a1+ref_a2+ref_a3)*(num_layers+vacuum_layers))
         self.evaluate_basic()
         
