@@ -1,5 +1,5 @@
  &control
-   prefix = 'qespresso',
+   prefix = 'bi_prefix',
    outdir = '/Users/shiangfang/Shiang DrobBox/Dropbox/Physics Research/Tim Kaxiras Group/DFT_KIT/examples/',
    pseudo_dir = '/home1/03051/sfang/Pseudo_Potential/QESPRESSO/',
    calculation = 'scf' ,

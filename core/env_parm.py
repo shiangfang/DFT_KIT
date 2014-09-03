@@ -41,15 +41,23 @@ def run_vasp_gamma(jm_mode):
 qespresso_pseudo_dir='/home1/03051/sfang/Pseudo_Potential/QESPRESSO/'
 virtualxcmd='/opt/apps/intel13/mvapich2_1_9/espresso/5.0.3/upftools/virtual.x '
 
-def run_qes_pwx(f_in,f_out):
-    os.system('pw.x <  ' + f_in + ' > ' + f_out)
-
+def run_qes_pwx(jm_mode,f_in):
+    #os.system('pw.x <  ' + f_in + ' > ' + f_out)
+    if jm_mode:
+        os.system('ibrun pw.x <  ' + f_in)
+    else:
+        os.system('pw.x <  ' + f_in)
+    
 #pw2wannier90
-pw2wannier90cmd='pw2wannier90.x'
-
-#WANNIER90
-wannier90cmd='wannier90.x'
-
+def run_qes_pw2wan(jm_mode,f_in):
+    os.system('~/wannier90/bin/pw2wannier90.x < ' +f_in)
+    
+#Wannier90
+def run_wannier90(jm_mode,f_in,pp_mode):
+    if pp_mode:
+        os.system('~/wannier90/bin/wannier90.2.0.x -pp '+f_in)
+    else:
+        os.system('~/wannier90/bin/wannier90.2.0.x ' +f_in)
 
 #SIESTA
 siesta_pseudo_dir='/home1/03051/sfang/Pseudo_Potential/SIESTA/'

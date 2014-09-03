@@ -66,22 +66,24 @@ class calculator_QESPRESSO(calculator.calculator):
             
     
     def run_main(self):
-        env_parm.run_qes_pwx(self.dft_job.sys_info['qes_fname']+'.in', self.dft_job.sys_info['qes_fname']+'.out')
-        if self.wannier90_analysis:
-            self.run_wannier()
+        env_parm.run_qes_pwx(self.dft_job.job_mamanger_mode,self.dft_job.sys_info['qes_fname']+'.in')
+        
+    def run_pw2wan(self):
+        self.qes_generate_pw2wan()
+        env_parm.run_qes_pw2wan(self.dft_job.job_mamanger_mode, self.dft_job.sys_info['qes_fname']+'.pw2wan')
     
     def qes_generate_pw2wan(self):
-        f_=open('qes.pw2wan','w')
+        f_=open(self.dft_job.sys_info['qes_fname']+'.pw2wan','w')
         f_.write(' &inputpp\n')
-        f_.write("   prefix = '" + self.dft_job.prefix + "',\n")
-        f_.write("   outdir = '" + self.dft_job.get_maindir() +"',\n")
-        f_.write("   seedname = '" +str() +"',\n")
+        f_.write("   prefix = '" + self.dft_job.sys_info['qes_prefix'] + "'\n")
+        f_.write("   outdir = '" + self.dft_job.get_maindir() +"'\n")
+        f_.write("   seedname = '" +self.dft_job.sys_info['wan90_seedname'] +"'\n")
         for ind_key in self.parms:
             if ind_key in QES_PW2WAN_flags:
-                f_.write('   '+ind_key+' = ' + self.parms[ind_key]+' ,\n')
+                f_.write('   '+ind_key+' = ' + self.parms[ind_key]+' \n')
         f_.write(' /')
         f_.write('\n')
-
+        f_.close()
 
         
     def generate_files(self):

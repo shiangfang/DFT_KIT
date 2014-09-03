@@ -50,6 +50,11 @@ class kpoint:
         
     def generate_kgrid(self,write_weight):
         return generate_kgrid(self.kgrid[0],self.kgrid[1],self.kgrid[2],write_weight)
+    def set_klist_grid(self,kgrid):
+        self.kgrid=np.array(kgrid)
+        self.kmode=2
+        self.klist=[]
+        self.klist=generate_kgrid(self.kgrid[0],self.kgrid[1],self.kgrid[2],True)
         
 def generate_kgrid(n1,n2,n3,write_weight=True):
     n_tot=n1*n2*n3

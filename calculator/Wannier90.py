@@ -21,7 +21,7 @@ from DFT_KIT.core import env_parm
 from DFT_KIT.core import calculator
 
 #for *.win file
-QES_wannier90_flags=['num_wann','num_bands','unit_cell_cart','gamma_only','spinor','shell_list','search_shells','kmesh_tol','postproc_setup','exclude_bands','restart','iprint','length_unit','wvfn_formatted',
+QES_wannier90_flags=['num_wann','num_bands','unit_cell_cart','gamma_only','spinors','shell_list','search_shells','kmesh_tol','postproc_setup','exclude_bands','restart','iprint','length_unit','wvfn_formatted',
                      'spin','devel_flag','timing_level','optimisation','translate_home_cell','write_xyz','write_vdw_data','write_hr_diag','dis_win_min','dis_win_max','dis_froz_min','dis_froz_max','dis_num_iter','dis_mix_ratio','dis_conv_tol',
                      'dis_conv_window','num_iter','num_cg_steps','conv_window','conv_tol','conv_noise_amp','conv_noise_num','num_dump_cycles','num_print_cycles','write_r2mn','guiding_center','num_guide_cycles','num_to_guide_iter','trial_step',
                      'fixed_step','use_bloch_phases','wannier_plot','wannier_plot_list','wannier_plot_supercell','wannier_plot_format','wannier_plot_mode','wannier_plot_radius','bands_plot','kpoint_path','bands_num_points','bands_plot_format','bands_plot_project',
@@ -37,6 +37,9 @@ class calculator_Wannier90(calculator.calculator):
         
     def add_projection(self,proj):
         self.projections.append(proj)
+    def add_projections(self,projs):
+        for proj in projs:
+            self.projections.append(proj)
         
     def apply_scheme(self,scheme):
         self.set_parm('ibrav','0')
@@ -51,7 +54,7 @@ class calculator_Wannier90(calculator.calculator):
         pass
     def generate_files(self):
         #control section
-        f_=open('wannier90.win','w')
+        f_=open(self.dft_job.sys_info['wan90_seedname']+'.win','w')
         
         for ind_key in self.parms:
             if ind_key in QES_wannier90_flags:
@@ -85,8 +88,13 @@ class calculator_Wannier90(calculator.calculator):
     
         f_.close()
         
-    def run_wannier(self):
-        pass
+    def run_wannier(self,gen_file,with_pp):
+        if gen_file:
+            self.generate_files()
+        if with_pp:
+            env_parm.run_wannier90(self.dft_job.job_mamanger_mode, self.dft_job.sys_info['wan90_seedname'],True)
+        else:
+            env_parm.run_wannier90(self.dft_job.job_mamanger_mode,self.dft_job.sys_info['wan90_seedname'],False)
     
     def read_hamiltonian(self):
         output={'connectionR':None,'Hamiltonian':None}
