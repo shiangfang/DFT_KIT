@@ -9,7 +9,7 @@ import sys
 import shutil
 
 class job:
-    def __init__(self,subdir=True,system='DFT simulation',dir_task_prefix='task_',verbosity=True,**parms):
+    def __init__(self,subdir=True,job_manager_mode=False,system='DFT simulation',dir_task_prefix='task_',verbosity=True,**parms):
         self.root_dir=os.getcwd()+'/'
         self.subdir=subdir #make subdir structure
         self.all_dir=[]
@@ -32,7 +32,7 @@ class job:
             self.main_dir=self.root_dir
             self.all_dir.append(self.main_dir)
         self.common_dir=''
-        self.job_mamanger_mode=False
+        self.job_mamanger_mode=job_manager_mode
         self.opt_parm={'cpu':1}
             
         #include prefix, filename, etc.
