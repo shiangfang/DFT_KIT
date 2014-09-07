@@ -58,6 +58,9 @@ def run_wannier90(jm_mode,f_in,pp_mode):
         os.system('~/wannier90/bin/wannier90.2.0.x -pp '+f_in)
     else:
         os.system('~/wannier90/bin/wannier90.2.0.x ' +f_in)
+        
+def run_post_wannier90(jm_mode,f_in):
+    os.system('~/wannier90/bin/postw90.2.0.x ' +f_in)
 
 #SIESTA
 siesta_pseudo_dir='/home1/03051/sfang/Pseudo_Potential/SIESTA/'

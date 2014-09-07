@@ -63,7 +63,7 @@ Bi_qespresso_crystal_nscf_soi={}
 Bi_qespresso_slab_scf={}
 Bi_qespresso_slab_nscf_soi={}
 
-Bi_wannier90={'num_wann':'16','num_iter':'200','dis_num_iter':'500','dis_win_min':'-10','dis_win_max':'30','dis_froz_min':'-10','dis_froz_max':'10','length_unit':'Ang','spinors':'true','hr_plot':'true'}
+Bi_wannier90={'num_wann':'16','num_iter':'200','dis_num_iter':'500','dis_win_min':'-10','dis_win_max':'30','dis_froz_min':'-10','dis_froz_max':'10','length_unit':'Ang','spinors':'true','hr_plot':'true','write_xyz':'true','write_r2mn':'true'}    
 Bi_pw2wan={'write_amn':'.true.','write_spn':'.true.','write_mmn':'.true.','write_unk':'.false.'}
 
 

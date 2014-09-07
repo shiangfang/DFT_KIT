@@ -19,6 +19,7 @@ import string
 from DFT_KIT.core import general_tool
 from DFT_KIT.core import env_parm
 from DFT_KIT.core import calculator
+from DFT_KIT.interface import interface
 
 #for *.win file
 QES_wannier90_flags=['num_wann','num_bands','unit_cell_cart','gamma_only','spinors','shell_list','search_shells','kmesh_tol','postproc_setup','exclude_bands','restart','iprint','length_unit','wvfn_formatted',
@@ -27,13 +28,16 @@ QES_wannier90_flags=['num_wann','num_bands','unit_cell_cart','gamma_only','spino
                      'fixed_step','use_bloch_phases','wannier_plot','wannier_plot_list','wannier_plot_supercell','wannier_plot_format','wannier_plot_mode','wannier_plot_radius','bands_plot','kpoint_path','bands_num_points','bands_plot_format','bands_plot_project',
                      'bands_plot_mode','bands_plot_dim','fermi_surface_plot','fermi_surface_num_points','fermi_energy','fermi_energy_min','fermi_energy_max','fermi_energy_step','fermi_surface_plot_format','hr_plot','hr_cutoff','dist_cutoff','dist_cutoff_mode',
                      'translation_center_frac','transport','transport_mode','tran_win_min','tran_win_max','tran_energy_step','fermi_energy','tran_num_bb','tran_num_ll','tran_num_rr','tran_num_cc','tran_num_lc','tran_num_cr','tran_num_cell_ll','tran_num_cell_rr','tran_num_bandc',
-                     'tran_write_ht','tran_read_ht','tran_use_same_lead','tran_group_threshold','hr_cutoff','dist_cutoff','dist_cutoff_mode','one_dim_axis','translation_center_frac']
+                     'tran_write_ht','tran_read_ht','tran_use_same_lead','tran_group_threshold','hr_cutoff','dist_cutoff','dist_cutoff_mode','one_dim_axis','translation_center_frac',
+                     'dos']
 
 class calculator_Wannier90(calculator.calculator):
     def __init__(self,postprocess,dft_job,crystal,kgrid,scheme=0,**parms):
         calculator.calculator.__init__(self,postprocess,dft_job,crystal,kgrid,**parms)
         self.apply_scheme(scheme)
         self.projections=[]
+        self.run_postw90=True
+        self.matlab_save={}
         
     def add_projection(self,proj):
         self.projections.append(proj)
@@ -95,25 +99,92 @@ class calculator_Wannier90(calculator.calculator):
             env_parm.run_wannier90(self.dft_job.job_mamanger_mode, self.dft_job.sys_info['wan90_seedname'],True)
         else:
             env_parm.run_wannier90(self.dft_job.job_mamanger_mode,self.dft_job.sys_info['wan90_seedname'],False)
+        
+        if self.run_postw90:
+            env_parm.run_post_wannier90(self.dft_job.job_mamanger_mode,self.dft_job.sys_info['wan90_seedname'])
     
-    def read_hamiltonian(self):
-        output={'connectionR':None,'Hamiltonian':None}
-        f_=open('*.hr','r')
+    
+    def read_hamiltonian(self,fname):
+        f_=open(fname,'r')
         f_.readline()
         num_wann=int(f_.readline())
         nrpts=int(f_.readline())
         
         num_lines=int((float(nrpts)-1.0)/float(15.0))+1
-        degeneracy=[]
+        r_degeneracy=[]
         for ind in range(0,num_lines):
             tmp=f_.readline().split()
             for itm in tmp:
-                degeneracy.append(int(itm))
+                r_degeneracy.append(int(itm))
+        f_.close()
         
-        tot_lines=num_wann*num_wann*nrpts
+        ham_array_tmp=np.loadtxt(fname,skiprows=3+num_lines)
+        self.hamiltonian_real_data=np.zeros((nrpts,num_wann,num_wann))
+        self.hamiltonian_imag_data=np.zeros((nrpts,num_wann,num_wann))
+        self.hamiltonian_r_data=np.zeros((nrpts,3))
+        
+        ind_tmp=0
+        for indr in range(0,nrpts):
+            self.hamiltonian_r_data[indr,0]=ham_array_tmp[ind_tmp,0]
+            self.hamiltonian_r_data[indr,1]=ham_array_tmp[ind_tmp,1]
+            self.hamiltonian_r_data[indr,2]=ham_array_tmp[ind_tmp,2]
+            for ind0 in range(0,num_wann*num_wann):
+                ind1=ham_array_tmp[ind_tmp,3]
+                ind2=ham_array_tmp[ind_tmp,4]
+                self.hamiltonian_real_data[indr,ind1,ind2]=ham_array_tmp[ind_tmp,5]/r_degeneracy[indr]
+                self.hamiltonian_imag_data[indr,ind1,ind2]=ham_array_tmp[ind_tmp,6]/r_degeneracy[indr]
+                ind_tmp=ind_tmp+1
+        self.matlab_save['ham_real']=self.hamiltonian_real_data
+        self.matlab_save['ham_imag']=self.hamiltonian_imag_data
+        self.matlab_save['ham_r']=self.hamiltonian_r_data
         
         
-        #start to analyze the lines
+    def read_center_xyz(self,fname,num_wann):
+        f_=open(fname,'r')
+        total_pos=int(f_.readline())
+        f_.readline()
+        self.xyz_data=[]
+        for ind in range(0,num_wann):
+            tmp=f_.readline().split()
+            tmp.pop(0)
+            self.xyz_data.append(np.array([int(tmp[0]),int(tmp[1]),int([2])]))
+        f_.close()
+        self.matlab_save['xyz_center']=self.xyz_data
+        
+    def read_r2mn(self,fname,num_wann):
+        f_=open(fname,'r')
+        
+        self.r2mn_data=np.zeros((num_wann,num_wann))
+        for ind1 in range(0,num_wann):
+            for ind2 in range(0,num_wann):
+                tmp=f_.readline().split()
+                self.r2mn_data[ind1,ind2]=float(tmp[2])
+        f_.close()
+        self.matlab_save['r2mn']=self.r2mn_data
+        
+    def read_dos(self,fname):
+        self.dos_data=np.loadtxt(fname)
+        self.matlab_save['dos']=self.dos_data
+        
+        
+    def post_process(self):
+        seedname=self.dft_job.sys_info['wan90_seedname']
+        if 'hr_plot' in self.parms:
+            self.read_hamiltonian(seedname+'_hr.dat')
+        if 'write_xyz' in self.parms:
+            self.read_center_xyz(seedname+'_centres.xyz',int(self.parms['num_wann']))
+        if 'write_r2mn' in self.parms:
+            self.read_r2mn(seedname+'.r2mn',int(self.parms['num_wann']))
+        if 'dos' in self.parms:
+            self.read_center_xyz(seedname+'-dos.dat')
+        
+    def save_post_process(self,fname):
+        if fname=='':
+            interface.matlab_save(self.dft_job.sys_info['wan90_seedname']+'_DFT_KIT',self.matlab_save)
+        else:
+            interface.matlab_save(fname,self.matlab_save)
+        
+            
         
         
         

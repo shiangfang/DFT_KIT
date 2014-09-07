@@ -12,6 +12,8 @@ class atom:
         self.element=copy.copy(element)
         self.position=position
         self.magmom=np.array([0,0,0])
+        self.velocity=np.array([0.0,0.0,0.0])
+        self.position_update=[False,False,False]
         self.parms={}
         
         for ind_parm in parms:

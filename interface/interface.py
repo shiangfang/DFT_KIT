@@ -23,10 +23,10 @@ def load_from_xml(self,root_,findstr,data_):
 
 # between numerical data
 
-def read_mat_file(fname):
+def matlab_load(fname):
     return scipy.io.loadmat(fname)
 
-def write_mat_file(fname,data_to_save):
+def matlab_save(fname,data_to_save):
     #data_to_save is a dictionary
     scipy.io.savemat(fname,data_to_save)
 
