@@ -9,35 +9,20 @@ import sys
 from DFT_KIT.core import job, kpoint, element, crystal_3D
 from DFT_KIT.calculator import VASP
 from DFT_KIT.apps import crystal_structure
+from DFT_KIT.interface import interface_script
+from DFT_KIT.apps import bismuth_antimony
 
+[input_parm,opt_parm]=interface_script.init_simulation(1)
+scan_parm_index=int(input_parm[0])
 
-print('---------------------------------------------')
-print('     DFT_KIT program')
-print('---------------------------------------------')
-print('\n')
-print('Multiple process: arguments')
-print(sys.argv)
+energy_cutoffs=np.linspace(200,400,30)
+scan_energy=energy_cutoffs[scan_parm_index]
 
-expect_num_parm=1
-input_num_parm=len(sys.argv)
-if input_num_parm < (expect_num_parm+1):
-    print('ERROR: wrong number of input parameters for the program')
-    exit()
-    
-input_parm=[]
-for ind in range(1,expect_num_parm+1):
-    input_parm.append(sys.argv[ind])
-
-e_ind=int(input_parm[0])
-all_es=np.linspace(200,300,6)
-e_now=all_es[e_ind]
-
-test_job=job.job(subdir=False)
+test_job=job.job(subdir=True)
 test_kgrid=kpoint.kpoint()
-test_crystal=crystal_structure.a7_structure(element.Bi_exp,length_unit=1.0)
-test_calc=VASP.calculator_VASP(False,test_job,test_crystal,test_kgrid,scheme=0,xc='PBE',ENCUT=str(e_now))
+test_crystal=crystal_structure.a7_structure(bismuth_antimony.Bi_exp,length_unit=1.0)
+test_calc=VASP.calculator_VASP(False,test_job,test_crystal,test_kgrid,scheme=0)
+test_calc.set_parm('ENCUT', str(scan_energy))
 test_calc.run_calculation()
-
-
 
 

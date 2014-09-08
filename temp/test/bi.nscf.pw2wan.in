@@ -1,9 +1,0 @@
- &inputpp
-   prefix = 'bi_prefix',
-   outdir = '/Users/shiangfang/Shiang DrobBox/Dropbox/Physics Research/Tim Kaxiras Group/DFT_KIT/examples/',
-   seedname = 'wan90',
-   write_amn = .true. ,
-   write_unk = .false. ,
-   write_mmn = .true. ,
-   write_spn = .true. ,
- /

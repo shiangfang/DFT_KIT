@@ -36,6 +36,8 @@ class calculator_QESPRESSO(calculator.calculator):
         self.write_atomic_forces=False
         self.atomic_positions_ang=True
         
+        self.qes_vars={}
+        
     def apply_scheme(self,scheme):
         self.set_parm('ibrav','0')
         if scheme==0:
@@ -196,36 +198,172 @@ class calculator_QESPRESSO(calculator.calculator):
         
         f_.close()
         
-    def qespresso_postana_xml(self):
-        #for scf result
-        
-        
-        #for band structure
-        start_k=1
-        end_k=102
-        n_bands=40
-        all_bands=np.zeros((end_k-start_k+1,n_bands))
-        indexs=range(start_k,end_k+1)
-        name_prefix='Bi/bismuth.save'
-
-        for ind in range(0,end_k-start_k+1):
-            path_ind=name_prefix+'/K'+"{0:05d}".format(indexs[ind])+'/eigenval.xml'
-            #print(path_ind)
-            xml_tree = ET.parse(path_ind)
-            root = xml_tree.getroot()
-            #for tmp in root:
-            #    print(tmp)
-            root_val=root.find('EIGENVALUES')
-            #print(root_val.tag)
-            #print(root_val.attrib)
-            eigen_vals=root_val.text.split()
-            for ind2 in range(0,n_bands):
-                all_bands[ind,ind2]=(float(eigen_vals[ind2]))
-        
-
     def post_process(self):
-        pass
-    
-    def run_wannier(self):
-        pass
+        self.qespresso_post_process_xml()
+        self.qespresso_post_process_outfile('bi.nscf.out')
+        
+    def qespresso_post_process_outfile(self,fname):
+        f_=open(fname,'r')
+        self.qes_vars['sc_tot_energy']=[]
+        self.qes_vars['sc_harrisf_energy']=[]
+        self.qes_vars['sc_energy_accu']=[]
+        iteration=0
+        
+        end_scf=False
+        calc_scf=False
+        calc_band=False
+        self.qes_vars['tot_energy']=0.0
+        self.qes_vars['harrisf_energy']=0.0
+        self.qes_vars['energy_accu']=0.0
+        self.qes_vars['onee_energy']=0.0
+        self.qes_vars['hartree_energy']=0.0
+        self.qes_vars['xc_energy']=0.0
+        self.qes_vars['ewald_energy']=0.0
+        
+        while True:
+            tmpstr=f_.readline()
+            tmpstrs=tmpstr.split()
+            if tmpstr=='':
+                break
+            
+            if tmpstr.find('Self-consistent Calculation')>=0:
+                calc_scf=True
+                
+            if tmpstr.find('Band Structure Calculation')>=0:
+                calc_band=True
+            
+            if tmpstr.find('iteration #')>=0:
+                iteration = int(tmpstrs[2])
+                
+            if tmpstr.find('End of self-consistent calculation')>=0:
+                end_scf=True
+                
+            #cpu/mem
+            if tmpstr.find('PWSCF')>=0 and tmpstr.find('CPU')>=0:
+                self.qes_vars['cpu_time']=float(tmpstrs[2][:-1])
+                self.qes_vars['wall_time']=float(tmpstrs[4][:-1])
+            
+            if tmpstr.find('total energy')>=0 and tmpstr.find('=')>=0:
+                if end_scf:
+                    self.qes_vars['tot_energy']=float(tmpstrs[4])
+                else:
+                    self.qes_vars['sc_tot_energy'].append(float(tmpstrs[3]))
+
+            if tmpstr.find('Harris-Foulkes estimate')>=0:
+                if end_scf:
+                    self.qes_vars['harrisf_energy']=float(tmpstrs[3])
+                else:
+                    self.qes_vars['sc_harrisf_energy'].append(float(tmpstrs[3]))
+            
+            if tmpstr.find('estimated scf accuracy')>=0:
+                if end_scf:
+                    self.qes_vars['energy_accu']=float(tmpstrs[4])
+                else:
+                    self.qes_vars['sc_energy_accu'].append(float(tmpstrs[4]))
+                
+            if tmpstr.find('one-electron contribution')>=0:
+                self.qes_vars['onee_energy']=float(tmpstrs[3])
+            if tmpstr.find('hartree contribution')>=0:
+                self.qes_vars['hartree_energy']=float(tmpstrs[3])
+            if tmpstr.find('xc contribution')>=0:
+                self.qes_vars['xc_energy']=float(tmpstrs[3])
+            if tmpstr.find('ewald contribution')>=0:
+                self.qes_vars['ewald_energy']=float(tmpstrs[3])
+            #error message handling
+            
+            
+            
+        
+    def qespresso_post_process_xml(self,xmlfile='data-file.xml'):
+        tree = ET.parse(xmlfile)
+        root = tree.getroot()
+        
+        root_header=root.find('HEADER')
+        root_control=root.find('CONTROL')
+        
+        root_cell=root.find('CELL')
+        prim_vec_a1=root_cell.find('DIRECT_LATTICE_VECTORS/a1')
+        prim_vec_a2=root_cell.find('DIRECT_LATTICE_VECTORS/a2')
+        prim_vec_a3=root_cell.find('DIRECT_LATTICE_VECTORS/a3')
+        rec_vec_b1=root_cell.find('RECIPROCAL_LATTICE_VECTORS/b1')
+        rec_vec_b2=root_cell.find('RECIPROCAL_LATTICE_VECTORS/b2')
+        rec_vec_b3=root_cell.find('RECIPROCAL_LATTICE_VECTORS/b3')
+        
+        root_ions=root.find('IONS')
+        tmp=root_ions.find('NUMBER_OF_ATOMS')
+        self.qes_vars['num_atoms']=int(tmp.text)
+        tmp=root_ions.find('NUMBER_OF_SPECIES')
+        self.qes_vars['num_types']=int(tmp.text)
+        
+        self.qes_vars['atom_pos']=[]
+        for ind in range(1,self.qes_vars['num_atoms']+1):
+            tmp=root_ions.find('ATOM.'+str(ind))
+            self.qes_vars['atom_pos'].append(tmp.attrib['tau'])
+        
+        root_symmetries=root.find('SYMMETRIES')
+        root_electric_field=root.find('ELECTRIC_FIELD')
+        root_pw=root.find('PLANE_WAVES')
+        tmp=root_pw.find('WFC_CUTOFF')
+        
+        root_spin=root.find('SPIN')
+        root_mag=root.find('MAGNETIZATION_INIT')
+        root_xc=root.find('EXCHANGE_CORRELATION')
+        tmp=root_xc.find('DFT')
+        self.qes_vars['xc']=tmp.text
+        
+        root_occ=root.find('OCCUPATIONS')
+        root_bz=root.find('BRILLOUIN_ZONE')
+        tmp=root_bz.find('NUMBER_OF_K-POINTS')
+        self.qes_vars['num_kpts']=int(tmp.text)
+        self.qes_vars['kpts']=[]
+        self.qes_vars['kpts_weight']=[]
+        for ind in range(1,self.qes_vars['num_kpts']+1):
+            tmp=root_bz.find('K-POINT.'+str(ind))
+            self.qes_vars['kpts'].append(tmp.attrib['XYZ'])
+            self.qes_vars['kpts_weight'].append(tmp.attrib['WEIGHT'])
+        
+        root_par=root.find('PARALLELISM')
+        tmp=root_par.find('NUMBER_OF_PROCESSORS')
+        
+        root_charge_den=root.find('CHARGE-DENSITY')
+        
+        
+        root_band=root.find('BAND_STRUCTURE_INFO')
+        tmp=root_band.find('UNITS_FOR_ENERGIES')
+        self.qes_vars['unit_energy']=tmp.text
+        tmp=root_band.find('FERMI_ENERGY')
+        self.qes_vars['fermi_energy']=float(tmp.text)
+        tmp=root_band.find('NUMBER_OF_BANDS')
+        self.qes_vars['num_bands']=int(tmp.text)
+        tmp=root_band.find('NUMBER_OF_ELECTRONS')
+        self.qes_vars['num_electrons']=float(tmp.text)
+        
+        
+        root_eigval=root.find('EIGENVALUES')
+        self.qes_vars['eigenvalues']=np.zeros((self.qes_vars['num_bands'],self.qes_vars['num_kpts']))
+        self.qes_vars['occupations']=np.zeros((self.qes_vars['num_bands'],self.qes_vars['num_kpts']))
+        
+        for indk in range(1,self.qes_vars['num_kpts']+1):
+            tmp=root_eigval.find('K-POINT.'+str(ind))
+            subtmp=tmp.find('DATAFILE')
+            eigxml=subtmp.attrib['iotk_link']
+            
+            #analyze the xml for the k point
+            eigtree = ET.parse(eigxml)
+            eigroot = eigtree.getroot()
+            
+            eigroot_val=eigroot.find('EIGENVALUES')
+            tmp_vals=eigroot_val.text.split()
+            for ind2 in range(0,self.qes_vars['num_bands']):
+                self.qes_vars['eigenvalues'][ind2,indk-1]=(float(tmp_vals[ind2]))
+
+            eigroot_occ=eigroot.find('OCCUPATIONS')
+            tmp_occs=eigroot_occ.text.split()
+            for ind2 in range(0,self.qes_vars['num_bands']):
+                self.qes_vars['occupations'][ind2,indk-1]=(float(tmp_occs[ind2]))
+
+            
+            
+        root_eigvec=root.find('EIGENVECTORS')
+        
 

@@ -119,20 +119,23 @@ class calculator_Wannier90(calculator.calculator):
         f_.close()
         
         ham_array_tmp=np.loadtxt(fname,skiprows=3+num_lines)
-        self.hamiltonian_real_data=np.zeros((nrpts,num_wann,num_wann))
-        self.hamiltonian_imag_data=np.zeros((nrpts,num_wann,num_wann))
+        self.hamiltonian_real_data=np.zeros((num_wann,num_wann,nrpts))
+        self.hamiltonian_imag_data=np.zeros((num_wann,num_wann,nrpts))
         self.hamiltonian_r_data=np.zeros((nrpts,3))
         
         ind_tmp=0
+        #the data structure is shift1,2,3 then m, n, real, imag part of H
+        # and the element is H^R_mn = <0m|Op|Rn>
+        
         for indr in range(0,nrpts):
             self.hamiltonian_r_data[indr,0]=ham_array_tmp[ind_tmp,0]
             self.hamiltonian_r_data[indr,1]=ham_array_tmp[ind_tmp,1]
             self.hamiltonian_r_data[indr,2]=ham_array_tmp[ind_tmp,2]
             for ind0 in range(0,num_wann*num_wann):
-                ind1=ham_array_tmp[ind_tmp,3]
-                ind2=ham_array_tmp[ind_tmp,4]
-                self.hamiltonian_real_data[indr,ind1,ind2]=ham_array_tmp[ind_tmp,5]/r_degeneracy[indr]
-                self.hamiltonian_imag_data[indr,ind1,ind2]=ham_array_tmp[ind_tmp,6]/r_degeneracy[indr]
+                ind1=ham_array_tmp[ind_tmp,3]-1
+                ind2=ham_array_tmp[ind_tmp,4]-1
+                self.hamiltonian_real_data[ind1,ind2,indr]=ham_array_tmp[ind_tmp,5]/float(r_degeneracy[indr])
+                self.hamiltonian_imag_data[ind1,ind2,indr]=ham_array_tmp[ind_tmp,6]/float(r_degeneracy[indr])
                 ind_tmp=ind_tmp+1
         self.matlab_save['ham_real']=self.hamiltonian_real_data
         self.matlab_save['ham_imag']=self.hamiltonian_imag_data
@@ -147,7 +150,7 @@ class calculator_Wannier90(calculator.calculator):
         for ind in range(0,num_wann):
             tmp=f_.readline().split()
             tmp.pop(0)
-            self.xyz_data.append(np.array([int(tmp[0]),int(tmp[1]),int([2])]))
+            self.xyz_data.append(np.array([float(tmp[0]),float(tmp[1]),float(tmp[2])]))
         f_.close()
         self.matlab_save['xyz_center']=self.xyz_data
         
@@ -169,6 +172,7 @@ class calculator_Wannier90(calculator.calculator):
         
     def post_process(self):
         seedname=self.dft_job.sys_info['wan90_seedname']
+        self.matlab_save['num_wann']=int(self.parms['num_wann'])
         if 'hr_plot' in self.parms:
             self.read_hamiltonian(seedname+'_hr.dat')
         if 'write_xyz' in self.parms:
@@ -178,9 +182,9 @@ class calculator_Wannier90(calculator.calculator):
         if 'dos' in self.parms:
             self.read_center_xyz(seedname+'-dos.dat')
         
-    def save_post_process(self,fname):
+    def save_post_process(self,fname=''):
         if fname=='':
-            interface.matlab_save(self.dft_job.sys_info['wan90_seedname']+'_DFT_KIT',self.matlab_save)
+            interface.matlab_save(self.dft_job.sys_info['wan90_seedname']+'.DFT_KIT',self.matlab_save)
         else:
             interface.matlab_save(fname,self.matlab_save)
         

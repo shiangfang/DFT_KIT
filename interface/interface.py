@@ -15,7 +15,7 @@ def dft_kit_to_ase_kpts(kit_kpts):
         pass
 
 # XML data
-def load_from_xml(self,root_,findstr,data_):
+def load_from_xml(root_,findstr,data_):
     xml_item=root_.find(findstr)
     for item_ in xml_item:
         data_[item_.attrib['name']]=item_.text

@@ -248,7 +248,34 @@ class calculator_VASP(calculator.calculator):
 
 #Post Process tools for VASP
     def post_process(self):
-        pass
+        #xml analysis
+        self.vasp_post_process_xml()
+        
+        #analyze other files with info not in xml
+        self.vasp_post_process_OUTCAR() #to read job running information
+        
+        #fill in basic info (c.f. calculator.py for list)
+        
+        #crystal and atoms
+        self.output['num_atoms']=int(self.vasp_vars['N_atoms'])
+        self.output['num_types']=int(self.vasp_vars['N_atoms'])
+        self.output['init_prim_vectors']=self.vasp_vars['Init_prim']
+        self.output['init_volume']=float(self.vasp_vars['Init_vol'])
+        self.output['final_prim_vectors']=self.vasp_vars['Final_prim']
+        self.output['final_volume']=float(self.vasp_vars['Final_vol'])
+        
+        
+        #energy
+        self.output['total_energy']=float(self.final_calculation['Etotsig0'])
+        self.output['free_energy']=float(self.final_calculation['Efree'])
+        self.output['fermi_energy']=float(self.final_calculation['EFermi'])
+        self.output['entropy']=float(self.final_calculation['Eentropy'])
+        self.output['energy_cutoff']=float(self.vasp_vars['ENMAX'])
+        self.output['num_electrons']=round(float(self.vasp_vars['NELECT']))
+    
+        self.output['num_bands']=int(self.vasp_vars['NBANDS'])
+        
+    
     
 
 
@@ -368,9 +395,9 @@ class calculator_VASP(calculator.calculator):
 
 
 
-    def vasp_postana_xml(self,parm,xmlfile='vasprun.xml'):
-        #this will read from XML file and OUTCAR
-        tree = ET.parse(self.dft_job.get_maindir()+xmlfile)
+    def vasp_post_process_xml(self,xmlfile='vasprun.xml'):
+        #this will read from XML file
+        tree = ET.parse(xmlfile)
         root = tree.getroot()
         
         #generator
@@ -541,12 +568,52 @@ class calculator_VASP(calculator.calculator):
             cal_={}
             self.vasp_load_calculation_xml(root_cal,cal_)
             self.vasp_vars['Calculations'].append(cal_)
-            
-        #After processing the xml file, the program will put the raw data into universal output data form in self.output
         
+        self.final_calculation=cal_
+          
+    def vasp_post_process_OUTCAR(self):
+        file_outcar=open('OUTCAR','r')
+        pre_tmpstr=''
         
+        while True:
+            tmpstr=file_outcar.readline()
+            if tmpstr=='':
+                break
             
-    def vasp_postana_calculation(self,item,array=False,num=-1):
+            if tmpstr.find('total amount of memory used by VASP on root node')>=0:
+                self.vasp_vars['Memory']=tmpstr.split()[10]
+                tmpstr=file_outcar.readline()
+                tmpstr=file_outcar.readline()
+                str1=''
+                for ind in range(6):
+                    tmpstr=file_outcar.readline()
+                    str1+=tmpstr+'\n'
+                self.vasp_vars['VaspMemoryDetail']=str1
+                
+            if tmpstr.find('General timing and accounting informations for this job')>=0:
+                tmpstr=file_outcar.readline()
+                tmpstr=file_outcar.readline()
+                tmpstr=file_outcar.readline()
+                str1=''
+                self.vasp_vars['CPUtime']=tmpstr.split()[5]
+                str1+=tmpstr+'\n'
+                str1+=file_outcar.readline()+'\n'
+                str1+=file_outcar.readline()+'\n'
+                str1+=file_outcar.readline()+'\n'
+                str1+=file_outcar.readline()+'\n'
+                tmpstr=file_outcar.readline()
+                self.vasp_vars['MEMmax']=tmpstr.split()[4]
+                str1+=tmpstr+'\n'
+                str1+=file_outcar.readline()+'\n'
+                str1+=file_outcar.readline()+'\n'
+                str1+=file_outcar.readline()+'\n'
+                str1+=file_outcar.readline()+'\n'
+                str1+=file_outcar.readline()+'\n'
+                
+            pre_tmpstr=tmpstr
+        file_outcar.close()
+            
+    def vasp_post_process_calculation(self,item,array=False,num=-1):
         tmp=[]
         if num==-1:
             for cal in self.vasp_vars['Calculations']:
@@ -565,7 +632,7 @@ class calculator_VASP(calculator.calculator):
         return tmp
 
 # section for post processing and data output
-
+        
 
 
 

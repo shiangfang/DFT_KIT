@@ -32,9 +32,9 @@ class kpoint:
         self.kscan.append(kpoint)
     def set_num_kscan(self,num):
         self.num_kscan=num
-    def set_grid_mode(self,grid_):
+    def set_grid_mode(self,grid):
         self.kmode=0
-        self.kgrid=grid_    
+        self.kgrid=np.array(grid)    
     
     def set_scan_mode(self,num,kpoints):
         self.kmode=1

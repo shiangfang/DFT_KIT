@@ -83,15 +83,24 @@ class calculator:
         self.output['cputime']=0.0
         
         #Crystal and Atoms:
-        self.output['new_volume']=[]
-        self.output['new_prim_vectors']=[]
-        self.output['new_positions']=[]
-        self.output['new_velocities']=[]
+        self.output['num_atoms']=0
+        self.output['num_types']=0
+        self.output['init_volume']=[]
+        self.output['init_prim_vectors']=[]
+        self.output['init_positions']=[]
+        self.output['init_velocities']=[]
+        self.output['final_volume']=[]
+        self.output['final_prim_vectors']=[]
+        self.output['final_positions']=[]
+        self.output['final_velocities']=[]
+        self.output['num_electrons']=0
         
         #Energy:
         self.output['total_energy']=0.0
+        self.output['free_energy']=0.0
         self.output['fermi_energy']=0.0
         self.output['entropy']=0.0
+        self.output['energy_cutoff']=0.0
         self.output['den_of_state']=[]
         
         #Bands:

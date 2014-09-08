@@ -13,5 +13,9 @@ from DFT_KIT.interface import interface_script
 
 [input_parm,opt_parm]=interface_script.init_simulation(0)
 
+os.chdir('../temp/')
+test_job=job.job(subdir=False)
+test_calc=VASP.calculator_VASP(True,test_job,None,None)
+test_calc.post_process()
 
-
+print(test_calc.output)
