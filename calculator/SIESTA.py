@@ -135,9 +135,7 @@ NetCharge, 73
 New.A.Parameter, 29
 New.B.Parameter, 29
 NonCollinearSpin, 
-NumberOfAtoms, 14, 30
-NumberOfEigenStates, 55
-NumberOfSpecies, 14, 30
+NumberOfEigenStates,
 OccupationFunction, 57, 58
 OccupationMPOrder, 57
 ON.ChemicalPotential, 59
@@ -288,11 +286,7 @@ ZM.MaxDisplAngle, 84
 ZM.MaxDisplLength, 83
 ZM.UnitsAngle, 36
 ZM.UnitsLength, 36
-Zmatrix, 32
-
-
-
-'.split(',')
+Zmatrix'.split(',')
 
 
 class calculator_SIESTA(calculator.calculator):
@@ -326,9 +320,7 @@ class calculator_SIESTA(calculator.calculator):
             pass
        
     def generate_files(self):
-        print ('DFT_INPUT: SIESTA : Generate input files in ' + self.output_dir)
-        if self.verbose_display:
-            print('DFT_INPUT: SIESTA : Generating input.fdf file')
+        self.dft_job.show('CALC_SIESTA','generate input files for calculation')
         file_input_fdf=open(self.output_dir+'siesta_input.fdf','w')
         self.write_input_fdf(file_input_fdf)
         file_input_fdf.close()

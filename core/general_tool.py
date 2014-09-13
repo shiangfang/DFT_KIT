@@ -5,6 +5,58 @@
 import numpy as np
 import string
 
+#data type conversion:
+def bool_to_10(self,bool_):
+    if bool_:
+        return 1
+    else:
+        return 0
+    
+#def bool_to_str(bool_):
+def bool_to_TF(self,bool_):
+    if bool_:
+        return 'T'
+    else:
+        return 'F'
+    
+def bool_to_truefalse(self,bool_):
+    if bool_:
+        return 'true'
+    else:
+        return 'false'
+    
+#def convert_vector(vec):
+def str_to_vec(arr):
+    if len(arr)>0:
+        length1=len(arr)
+        tmp=np.zeros(length1)
+        for ind1 in range(length1):
+                tmp[ind1]=float(arr[ind1])
+        return tmp
+    else:
+        return [] 
+
+#def convert_array_2d(arr):
+def str_to_vec_2d(arr):
+    if len(arr)>0:
+        length1=len(arr)
+        length2=len(arr[0])
+        tmp=np.zeros((length1,length2))
+        for ind1 in range(length1):
+            for ind2 in range(length2):
+                tmp[ind1,ind2]=float(arr[ind1][ind2])
+        return tmp
+    else:
+        return []
+    
+def vec_to_str(vec):
+    tmp=[]
+    for comp in vec:
+        tmp.append(str(comp))
+    return ' '.join(tmp)
+
+
+
 class segments:
     def __init__(self,num_,sets_):
         self.ordering=np.array(range(0,num_*sets_))
@@ -28,45 +80,9 @@ class segments:
         t2=t1[::-1]
         self.ordering[t1]=self.ordering[t2]
 
-def bool_to_str(bool_):
-    if bool_:
-        return 'T'
-    else:
-        return 'F'
-    
-def convert_vector(vec):
-    if len(vec)>0:
-        length1=len(vec)
-        tmp=np.zeros(length1)
-        for ind1 in range(length1):
-                tmp[ind1]=float(vec[ind1])
-        return tmp
-    else:
-        return []    
-
-def convert_array_2d(arr):
-    if len(arr)>0:
-        length1=len(arr)
-        length2=len(arr[0])
-        tmp=np.zeros((length1,length2))
-        for ind1 in range(length1):
-            for ind2 in range(length2):
-                tmp[ind1,ind2]=float(arr[ind1][ind2])
-        return tmp
-    else:
-        return []
-    
-
-#from vec_tool
-import numpy as np
-import string
 
 #basic vector operations
-def vec_to_str(vec):
-    tmp=[]
-    for comp in vec:
-        tmp.append(str(comp))
-    return ' '.join(tmp)
+
 
 def get_unitvec(vec):
     vec=np.array(vec)

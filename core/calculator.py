@@ -27,8 +27,16 @@ class calculator:
         self.post_commands=[]
         self.output={}
         self.reset_simulation_data()
+        
+        self.bohr=0.529177210
+        self.hartree=27.211385
+        self.rydberg=13.605692
+        
+        self.run_post_process=True
 
-              
+    def set_run_post_process(self,post_process):
+        self.run_post_process=post_process
+        
     def run_calculation(self):
         if self.postprocess:
             self.dft_job.show_error('DFT_CALC','cannot run calculation in post process mode')
@@ -42,6 +50,9 @@ class calculator:
         self.run_main()
         for cmd in self.post_commands:
             os.system(cmd)
+            
+        if self.run_post_process:
+            self.post_process()
     
     
     def get_maindir(self):
@@ -90,6 +101,7 @@ class calculator:
         self.output['init_positions']=[]
         self.output['init_velocities']=[]
         self.output['final_volume']=[]
+        # format [[vec_0],[vec_1],[vec_2],...]
         self.output['final_prim_vectors']=[]
         self.output['final_positions']=[]
         self.output['final_velocities']=[]
@@ -113,7 +125,33 @@ class calculator:
         self.output['force']=[]
         self.output['stress']=[]
         
-  
+    def update_prim_cell(self):
+        if len(self.output['final_prim_vectors']) !=3:
+            self.dft_job.show_error('CALC', 'update prim cell error1')
+            return
+        
+        for ind, vec in enumerate(self.output['final_prim_vectors']):
+            if len(vec) !=3:
+                self.dft_job.show_error('CALC', 'update prim cell error 2')
+                return 
+            else:
+                self.crystal.set_prim_vec(ind,vec)
+            self.crystal.evaluate_basic()
+        
+        
+    def update_atom_pos(self):
+        if len(self.output['final_positions']) != self.crystal.get_totnum_atoms():
+            self.dft_job.show_error('CALC', 'mismatch atom numbers')
+        
+        ind=0
+        for group in self.crystal.basis_atom_groups:
+            for atom in self.crystal.basis_atom_groups[group]:
+                atom.set_position(self.output['final_positions'][ind])
+                ind=ind+1
+    
+    def update_crystal(self):
+        self.update_prim_cell()
+        self.update_atom_pos()
         
         
 

@@ -135,8 +135,25 @@ class crystal_3D:
             atom_=atom.atom(element,position,**parms)
             self.basis_atom_groups[symbol].append(atom_)
         
-    def updata_position(self,pos_list):
-        pass
+    def updata_prim_vectors(self,new_prim_vecs):
+        #   [[prim_0]
+        #    ,[prim_1]
+        #    ,[prim_2]]
+        self.primitive_vector[0][0:3]=new_prim_vecs[0][0:3]
+        self.primitive_vector[1][0:3]=new_prim_vecs[1][0:3]
+        self.primitive_vector[2][0:3]=new_prim_vecs[2][0:3]
+        
+    def update_atom_positions(self,new_positions):
+        # assume to take [[],[],[]]...
+        ind=0
+        for group in self.basis_atom_groups:
+            for group_atom in self.basis_atom_groups[group]:
+                group_atom.update_position(np.array(new_positions[ind][0:3]))
+                ind=ind+1
+        
+    def update_atom_position(self,group,atom_index,new_position):
+        self.basis_atom_groups[group][atom_index].update_position(new_position)
+        
         
 
 # classes for various 3D crystal structure (without any basis atoms)

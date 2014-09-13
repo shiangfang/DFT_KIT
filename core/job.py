@@ -37,7 +37,7 @@ class job:
             
         #include prefix, filename, etc.
         self.sys_info={'description':'DFT simulation with DFT_KIT',
-                       'qes_prefix':'qespresso',
+                       'qes_prefix':'qespre',
                        'qes_fname':'qespresso',
                        'siesta_prefix':'siesta',
                        'wan90_seedname':'wan90'}
