@@ -15,7 +15,7 @@ class atom:
         self.velocity=np.array([0.0,0.0,0.0])
         self.position_update=[False,False,False]
         self.parms={}
-        self.relax=[False,False,False]
+        self.relax=[True,True,True]
         
         for ind_parm in parms:
             self.parms[ind_parm]=parms[ind_parm]

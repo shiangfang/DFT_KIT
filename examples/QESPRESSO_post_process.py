@@ -13,10 +13,8 @@ from DFT_KIT.interface import interface_script
 
 [input_parm,opt_parm]=interface_script.init_simulation(0)
 
-os.chdir('../temp/qes_data/t1/')
 test_job=job.job(subdir=False)
 test_calc=QESPRESSO.calculator_QESPRESSO(True,test_job,None,None)
 test_calc.post_process()
-#print(test_calc.qes_vars['eigenvalues'])
 
-print(test_calc.qes_vars['tot_energy'])
+

@@ -58,7 +58,7 @@ Bi_vasp_slab_nscf_soi={'ISTART':'0','ICHARG':'11','ENCUT':'250','EDIFF':'1E-4','
 Bi_vasp_crystal_scf={'ISTART':'0','ENCUT':'250','EDIFF':'1E-6','ISMEAR':'-5','SIGMA':'0.2','LMAXMIX':'4'}
 Bi_vasp_crystal_nscf_soi={'ISTART':'0','ICHARG':'11','ENCUT':'250','EDIFF':'1E-6','GGA_COMPAT':'.FALSE.','ISYM':'0','SAXIS':'0 0 1','LSORBIT':'.TRUE.','LMAXMIX':'4','MAGMOM':True}
 
-Bi_qespresso_crystal_scf={'noncolin':'.true.','lspinorb':'.true.','ecutwfc':'25.0'}
+Bi_qespresso_crystal_scf={'noncolin':'.true.','lspinorb':'.true.','ecutwfc':'20.0'}
 Bi_qespresso_crystal_nscf_soi={}
 Bi_qespresso_slab_scf={'mixing mode':'local-TF'}
 Bi_qespresso_slab_nscf_soi={}

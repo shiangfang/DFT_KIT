@@ -10,6 +10,7 @@ import numpy as np
 import sys
 import string
 import xml.etree.ElementTree as ET
+import os.path
 
 from DFT_KIT.core import general_tool
 from DFT_KIT.core import env_parm
@@ -41,7 +42,7 @@ class calculator_QESPRESSO(calculator.calculator):
     def apply_scheme(self,scheme):
         self.set_parm('ibrav','0')
         if scheme==0:
-            # general scf for insulator
+            # general scf (for insulator)
             self.set_parm('calculation', "'scf'")
 
             
@@ -76,14 +77,14 @@ class calculator_QESPRESSO(calculator.calculator):
             
     
     def run_main(self):
-        env_parm.run_qes_pwx(self.dft_job.job_mamanger_mode,self.dft_job.sys_info['qes_fname']+'.in')
+        env_parm.run_qes_pwx(self.dft_job.job_mamanger_mode,self.dft_job.sys_info['qes_fname'])
         
     def run_pw2wan(self):
         self.qes_generate_pw2wan()
-        env_parm.run_qes_pw2wan(self.dft_job.job_mamanger_mode, self.dft_job.sys_info['qes_fname']+'.pw2wan')
+        env_parm.run_qes_pw2wan(self.dft_job.job_mamanger_mode, self.dft_job.sys_info['qes_fname'])
     
     def qes_generate_pw2wan(self):
-        f_=open(self.dft_job.sys_info['qes_fname']+'.pw2wan','w')
+        f_=open(self.dft_job.sys_info['qes_fname']+'.pw2wan.in','w')
         f_.write(' &inputpp\n')
         f_.write("   prefix = '" + self.dft_job.sys_info['qes_prefix'] + "'\n")
         f_.write("   outdir = '" + self.dft_job.get_maindir() +"'\n")
@@ -160,7 +161,10 @@ class calculator_QESPRESSO(calculator.calculator):
         #species, coordinate x and y
         for ind, group in enumerate(self.crystal.basis_atom_groups.keys()):
             for atom in self.crystal.basis_atom_groups[group]:
-                f_.write(' '+ group + ' ' +general_tool.vec_to_str(atom.get_position())+'  ' +general_tool.bool_to_10(atom.relax[0])+ ' '+general_tool.bool_to_10(atom.relax[1]) + ' '+general_tool.bool_to_10(atom.relax[2])+ '\n')
+                if self.parms['calculation']=="'vc-relax'" or self.parms['calculation']=="'relax'" or self.parms['calculation']=="'md'" or self.parms['calculation']=="'vc-md'":
+                    f_.write(' '+ group + ' ' +general_tool.vec_to_str(atom.get_position())+'  ' +str(general_tool.bool_to_10(atom.relax[0]))+ ' '+str(general_tool.bool_to_10(atom.relax[1])) + ' '+str(general_tool.bool_to_10(atom.relax[2]))+ '\n')
+                else:
+                    f_.write(' '+ group + ' ' +general_tool.vec_to_str(atom.get_position()) + '\n')
         f_.write('\n')
         
         
@@ -212,15 +216,18 @@ class calculator_QESPRESSO(calculator.calculator):
         
         
     def post_process(self):
-        self.qespresso_post_process_xml(self.dft_job.sys_info['qes_prefix']+'.save/data-file.xml')
-        self.qespresso_post_process_outfile(self.dft_job.sys_info['qes_fname']+'.pwx.out')
+        self.qespresso_post_process_xml(self.dft_job.sys_info['qes_prefix']+'.save/' ,'data-file.xml')
+        if os.path.isfile(self.dft_job.sys_info['qes_fname']+'.pwx.out'):
+            self.qespresso_post_process_outfile(self.dft_job.sys_info['qes_fname']+'.pwx.out')
+        else:
+            self.dft_job.show_error('QESPRESSO', 'pp-no out file')
         
         #fill in basic information
         #crystal
         self.output['num_atoms']=self.qes_vars['num_atoms']
         self.output['num_types']=self.qes_vars['num_types']
-        self.output['final_prim_vectors']=[self.qes_vars['prim_a1'],self.qes_vars['prim_a2'],self.qes_vars['prim_a3']]
-        self.output['final_positions']=self.qes_vars['atom_pos']
+        self.output['final_prim_vectors']=np.array([self.qes_vars['prim_a1'],self.qes_vars['prim_a2'],self.qes_vars['prim_a3']])
+        self.output['final_positions']=np.array(self.qes_vars['atom_pos'])
 
         #Energy:
         self.output['total_energy']=self.qes_vars['tot_energy']*self.rydberg
@@ -267,8 +274,8 @@ class calculator_QESPRESSO(calculator.calculator):
                 
             #cpu/mem
             if tmpstr.find('PWSCF')>=0 and tmpstr.find('CPU')>=0:
-                self.qes_vars['cpu_time']=float(tmpstrs[2][:-1])
-                self.qes_vars['wall_time']=float(tmpstrs[4][:-1])
+                self.qes_vars['cpu_time']=tmpstrs[2]
+                self.qes_vars['wall_time']=tmpstrs[4]
             
             if tmpstr.find('total energy')>=0 and tmpstr.find('=')>=0:
                 if tmpstr.find('!')>=0:
@@ -301,8 +308,8 @@ class calculator_QESPRESSO(calculator.calculator):
             
             
         
-    def qespresso_post_process_xml(self,xmlfile='data-file.xml'):
-        tree = ET.parse(xmlfile)
+    def qespresso_post_process_xml(self,xmldir,xmlfile='data-file.xml'):
+        tree = ET.parse(xmldir+xmlfile)
         root = tree.getroot()
         
         root_header=root.find('HEADER')
@@ -310,17 +317,17 @@ class calculator_QESPRESSO(calculator.calculator):
         
         root_cell=root.find('CELL')
         prim_vec_a1=root_cell.find('DIRECT_LATTICE_VECTORS/a1')
-        self.qes_vars['prim_a1']=self.bohr*general_tool.str_to_vec(prim_vec_a1.text)
+        self.qes_vars['prim_a1']=self.bohr*general_tool.str_to_vec(prim_vec_a1.text.split())
         prim_vec_a2=root_cell.find('DIRECT_LATTICE_VECTORS/a2')
-        self.qes_vars['prim_a2']=self.bohr*general_tool.str_to_vec(prim_vec_a2.text)
+        self.qes_vars['prim_a2']=self.bohr*general_tool.str_to_vec(prim_vec_a2.text.split())
         prim_vec_a3=root_cell.find('DIRECT_LATTICE_VECTORS/a3')
-        self.qes_vars['prim_a3']=self.bohr*general_tool.str_to_vec(prim_vec_a3.text)
+        self.qes_vars['prim_a3']=self.bohr*general_tool.str_to_vec(prim_vec_a3.text.split())
         rec_vec_b1=root_cell.find('RECIPROCAL_LATTICE_VECTORS/b1')
-        self.qes_vars['rec_b1']=(1.0/self.bohr)*general_tool.str_to_vec(rec_vec_b1.text)
+        self.qes_vars['rec_b1']=(1.0/self.bohr)*general_tool.str_to_vec(rec_vec_b1.text.split())
         rec_vec_b2=root_cell.find('RECIPROCAL_LATTICE_VECTORS/b2')
-        self.qes_vars['rec_b2']=(1.0/self.bohr)*general_tool.str_to_vec(rec_vec_b2.text)
+        self.qes_vars['rec_b2']=(1.0/self.bohr)*general_tool.str_to_vec(rec_vec_b2.text.split())
         rec_vec_b3=root_cell.find('RECIPROCAL_LATTICE_VECTORS/b3')
-        self.qes_vars['rec_b3']=(1.0/self.bohr)*general_tool.str_to_vec(rec_vec_b3.text)
+        self.qes_vars['rec_b3']=(1.0/self.bohr)*general_tool.str_to_vec(rec_vec_b3.text.split())
         
         root_ions=root.find('IONS')
         tmp=root_ions.find('NUMBER_OF_ATOMS')
@@ -331,7 +338,7 @@ class calculator_QESPRESSO(calculator.calculator):
         self.qes_vars['atom_pos']=[]
         for ind in range(1,self.qes_vars['num_atoms']+1):
             tmp=root_ions.find('ATOM.'+str(ind))
-            self.qes_vars['atom_pos'].append(general_tool.str_to_vec(tmp.attrib['tau']))
+            self.qes_vars['atom_pos'].append(general_tool.str_to_vec(tmp.attrib['tau'].split()))
         
         root_symmetries=root.find('SYMMETRIES')
         root_electric_field=root.find('ELECTRIC_FIELD')
@@ -352,7 +359,7 @@ class calculator_QESPRESSO(calculator.calculator):
         self.qes_vars['kpts_weight']=[]
         for ind in range(1,self.qes_vars['num_kpts']+1):
             tmp=root_bz.find('K-POINT.'+str(ind))
-            self.qes_vars['kpts'].append(tmp.attrib['XYZ'])
+            self.qes_vars['kpts'].append(tmp.attrib['XYZ'].split())
             self.qes_vars['kpts_weight'].append(tmp.attrib['WEIGHT'])
         
         root_par=root.find('PARALLELISM')
@@ -382,7 +389,7 @@ class calculator_QESPRESSO(calculator.calculator):
             eigxml=subtmp.attrib['iotk_link']
             
             #analyze the xml for the k point
-            eigtree = ET.parse(eigxml)
+            eigtree = ET.parse(xmldir+eigxml)
             eigroot = eigtree.getroot()
             
             eigroot_val=eigroot.find('EIGENVALUES')

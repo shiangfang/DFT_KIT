@@ -31,5 +31,9 @@ class calculator_ABINIT(calculator.calculator):
     def generate_files(self):
         pass
     
+    def post_process(self):
+        pass
+    
+    
     
         

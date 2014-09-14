@@ -12,7 +12,9 @@ from DFT_KIT.apps import crystal_structure
 from DFT_KIT.interface import interface_script
 from DFT_KIT.apps import bismuth_antimony
 
-[input_parm,opt_parm]=interface_script.init_simulation(0)
+[input_parm,opt_parm]=interface_script.init_simulation(1)
+scan_index=int(input_parm[0])
+
 
 test_job=job.job(subdir=False)
 
@@ -28,12 +30,4 @@ test_calc.load_parm(False, bismuth_antimony.Bi_qespresso_crystal_scf)
 test_calc.run_calculation()
 
 
-# second round, non-self-consistent calculation
-test_job.next_task(False)
-test_job.sys_info['qes_fname']='bi.nscf'
-test_calc.set_parm('calculation', "'nscf'")
-#change parameters here
-test_kgrid.set_scan_mode(50, [test_crystal.k_labels['L'],test_crystal.k_labels['Gamma'],test_crystal.k_labels['Gamma'],test_crystal.k_labels['T']])
-#test_calc.load_parm(True, bismuth_antimony.Bi_qespresso_crystal_nscf_soi)
-test_calc.run_calculation()
 

@@ -6,20 +6,20 @@ import numpy as np
 import string
 
 #data type conversion:
-def bool_to_10(self,bool_):
+def bool_to_10(bool_):
     if bool_:
         return 1
     else:
         return 0
     
 #def bool_to_str(bool_):
-def bool_to_TF(self,bool_):
+def bool_to_TF(bool_):
     if bool_:
         return 'T'
     else:
         return 'F'
     
-def bool_to_truefalse(self,bool_):
+def bool_to_truefalse(bool_):
     if bool_:
         return 'true'
     else:

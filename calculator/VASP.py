@@ -259,11 +259,12 @@ class calculator_VASP(calculator.calculator):
         #crystal and atoms
         self.output['num_atoms']=int(self.vasp_vars['N_atoms'])
         self.output['num_types']=int(self.vasp_vars['N_atoms'])
-        self.output['init_prim_vectors']=self.vasp_vars['Init_prim']
+        self.output['init_prim_vectors']=np.array(self.vasp_vars['Init_prim'])
         self.output['init_volume']=float(self.vasp_vars['Init_vol'])
-        self.output['final_prim_vectors']=self.vasp_vars['Final_prim']
+        self.output['final_prim_vectors']=np.array(self.vasp_vars['Final_prim'])
         self.output['final_volume']=float(self.vasp_vars['Final_vol'])
         
+        self.output['final_positions']=np.array(self.vasp_vars['Final_pos'])
         
         #energy
         self.output['total_energy']=float(self.final_calculation['Etotsig0'])
@@ -507,17 +508,17 @@ class calculator_VASP(calculator.calculator):
         initstr_pos=root_initstr.find(".//*[@name='positions']")
         self.vasp_vars['Init_pos']=[]
         for tmp in initstr_pos:
-            self.vasp_vars['Init_pos'].append(tmp.text.split())
+            self.vasp_vars['Init_pos'].append(np.array(general_tool.str_to_vec(tmp.text.split())))
         initstr_prim=root_initstr.find("./crystal/*[@name='basis']")
         self.vasp_vars['Init_prim']=[]
         for tmp in initstr_prim:
-            self.vasp_vars['Init_prim'].append(tmp.text.split())
+            self.vasp_vars['Init_prim'].append(np.array(general_tool.str_to_vec(tmp.text.split())))
         tmp=root_initstr.find("./crystal/*[@name='volume']")
         self.vasp_vars['Init_vol']=tmp.text
         initstr_rec=root_initstr.find("./crystal/*[@name='rec_basis']")
         self.vasp_vars['Init_rec']=[]
         for tmp in initstr_rec:
-            self.vasp_vars['Init_rec'].append(tmp.text.split())
+            self.vasp_vars['Init_rec'].append(np.array(general_tool.str_to_vec(tmp.text.split())))
         initstr_selec=root_initstr.find(".//*[@name='selective']")
         self.vasp_vars['Init_selective']=[]
         if initstr_selec is not None:
@@ -527,24 +528,24 @@ class calculator_VASP(calculator.calculator):
         self.vasp_vars['Init_velocities']=[]
         if initstr_velocity is not None:
             for vel_ in initstr_velocity:
-                self.vasp_vars['Init_velocities'].append(vel_.text.split())
+                self.vasp_vars['Init_velocities'].append(np.array(general_tool.str_to_vec(tmp.text.split())))
         
         #structure (final)
         root_finalstr=root.find(".//*[@name='finalpos']")
         finalstr_pos=root_finalstr.find(".//*[@name='positions']")
         self.vasp_vars['Final_pos']=[]
         for tmp in finalstr_pos:
-            self.vasp_vars['Final_pos'].append(tmp.text.split())
+            self.vasp_vars['Final_pos'].append(np.array(general_tool.str_to_vec(tmp.text.split())))
         finalstr_prim=root_finalstr.find("./crystal/*[@name='basis']")
         self.vasp_vars['Final_prim']=[]
         for tmp in finalstr_prim:
-            self.vasp_vars['Final_prim'].append(tmp.text.split())
+            self.vasp_vars['Final_prim'].append(np.array(general_tool.str_to_vec(tmp.text.split())))
         tmp=root_finalstr.find("./crystal/*[@name='volume']")
         self.vasp_vars['Final_vol']=tmp.text
         finalstr_rec=root_finalstr.find("./crystal/*[@name='rec_basis']")
         self.vasp_vars['Final_rec']=[]
         for tmp in finalstr_rec:
-            self.vasp_vars['Final_rec'].append(tmp.text.split())
+            self.vasp_vars['Final_rec'].append(np.array(general_tool.str_to_vec(tmp.text.split())))
         finalstr_selec=root_finalstr.find(".//*[@name='selective']")
         self.vasp_vars['Final_selective']=[]
         if finalstr_selec is not None:
@@ -554,7 +555,7 @@ class calculator_VASP(calculator.calculator):
         self.vasp_vars['Final_velocities']=[]
         if finalstr_velocity is not None:
             for vel_ in finalstr_velocity:
-                self.vasp_vars['Final_velocities'].append(vel_.text.split())
+                self.vasp_vars['Final_velocities'].append(np.array(general_tool.str_to_vec(tmp.text.split())))
         
         #calculation
         root_cals=root.findall('calculation')
@@ -571,8 +572,8 @@ class calculator_VASP(calculator.calculator):
         
         self.final_calculation=cal_
           
-    def vasp_post_process_OUTCAR(self):
-        file_outcar=open('OUTCAR','r')
+    def vasp_post_process_OUTCAR(self,fname='OUTCAR'):
+        file_outcar=open(fname,'r')
         pre_tmpstr=''
         
         while True:
