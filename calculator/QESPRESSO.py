@@ -41,6 +41,12 @@ class calculator_QESPRESSO(calculator.calculator):
         
     def apply_scheme(self,scheme):
         self.set_parm('ibrav','0')
+        self.set_parm('conv_thr', '1E-8')
+        self.set_parm('mixing_beta','0.3')
+        self.set_parm('diagonalization',"'cg'")
+        self.set_parm('diago_full_acc','.true.')
+        
+        
         if scheme==0:
             # general scf (for insulator)
             self.set_parm('calculation', "'scf'")
@@ -66,8 +72,7 @@ class calculator_QESPRESSO(calculator.calculator):
             #variable cell relaxation
             #ENCUT increase!
             self.set_parm('calculation', "'vc-relax'")
-
-        
+            self.set_parm('cell_dynamics', "'bfgs'")
         
             
         elif scheme==5:
@@ -338,7 +343,7 @@ class calculator_QESPRESSO(calculator.calculator):
         self.qes_vars['atom_pos']=[]
         for ind in range(1,self.qes_vars['num_atoms']+1):
             tmp=root_ions.find('ATOM.'+str(ind))
-            self.qes_vars['atom_pos'].append(general_tool.str_to_vec(tmp.attrib['tau'].split()))
+            self.qes_vars['atom_pos'].append(self.bohr*general_tool.str_to_vec(tmp.attrib['tau'].split()))
         
         root_symmetries=root.find('SYMMETRIES')
         root_electric_field=root.find('ELECTRIC_FIELD')

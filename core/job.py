@@ -123,8 +123,10 @@ class job:
         del self.parms[ind_key]
     def next_task(self,make_new_dir):
         if make_new_dir and self.subdir:
+            self.show('job', 'create new task and its directory')
             self.create_taskdir()
         else:
+            self.show('job', 'create new task')
             self.count=self.count+1
             self.all_dir.append(self.main_dir)
     def make_fname(self,prefix):

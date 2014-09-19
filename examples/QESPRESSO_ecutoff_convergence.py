@@ -14,9 +14,9 @@ from DFT_KIT.apps import bismuth_antimony
 
 [input_parm,opt_parm]=interface_script.init_simulation(1)
 scan_index=int(input_parm[0])
-e_min=0.0
-e_max=10.0
-e_num=10
+e_min=20.0
+e_max=50.0
+e_num=31
 all_es=np.linspace(e_min,e_max,e_num)
 e_now=all_es[scan_index]
 
