@@ -9,7 +9,7 @@ import sys
 import shutil
 
 class job:
-    def __init__(self,subdir=True,job_manager_mode=False,system='DFT simulation',dir_task_prefix='task_',verbosity=True,**parms):
+    def __init__(self,subdir=True,job_manager_mode=False,write_post_process=True,system='DFT simulation',dir_task_prefix='task_',verbosity=True,**parms):
         self.root_dir=os.getcwd()+'/'
         self.subdir=subdir #make subdir structure
         self.all_dir=[]
@@ -27,20 +27,34 @@ class job:
             self.parms[ind_key]=parms[ind_key]
         
         if subdir:
-            self.create_taskdir()
+            self.create_taskdir(True)
         else:
             self.main_dir=self.root_dir
             self.all_dir.append(self.main_dir)
         self.common_dir=''
         self.job_mamanger_mode=job_manager_mode
         self.opt_parm={'cpu':1}
+        
+        self.post_process_dir=''
+        if write_post_process:
+            self.post_process_dir=self.root_dir+'dft_post_process/'
+            os.mkdir(self.post_process_dir)
             
         #include prefix, filename, etc.
         self.sys_info={'description':'DFT simulation with DFT_KIT',
+                       'dft_post_process':'dft_post_process',
                        'qes_prefix':'qespre',
                        'qes_fname':'qespresso',
                        'siesta_prefix':'siesta',
                        'wan90_seedname':'wan90'}
+        
+    def back_to_root(self):
+        os.chdir(self.root_dir)
+        
+    def process_opt_parm(self,opt_parm):
+        if 'jm_cpu' in opt_parm:
+            self.job_mamanger_mode=True
+            self.opt_parm['cpu']=int(opt_parm['jm_cpu'])
         
     def load_opt_parm(self,opt_parm):    
         for ind_key in opt_parm:
@@ -102,16 +116,18 @@ class job:
         dir_to=self.main_dir
         shutil.copy(dir_from+fname, dir_to)
     
-    def create_taskdir(self):
+    def create_taskdir(self,init_create=False):
         if not self.subdir:
             self.show_error('DFT_job', 'subdir not properly set')
             return 0
+        if not init_create:
+            self.count=self.count+1
         dir_tmp=self.root_dir+self.get_task_dirname(self.count)+'/'
         self.all_dir.append(dir_tmp)
         os.mkdir(dir_tmp)
         os.chdir(dir_tmp)
         self.main_dir=dir_tmp
-        self.count=self.count+1
+        
     def get_task_dirname(self,task_):
         return self.task_prefix+str(task_)
         

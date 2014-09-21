@@ -8,6 +8,7 @@
 import os
 
 from DFT_KIT.core import job
+from DFT_KIT.interface import interface
 
 class calculator:
     def __init__(self,postprocess,dft_job,crystal,kgrid,**parms):
@@ -28,16 +29,14 @@ class calculator:
         self.output={}
         self.reset_simulation_data()
         
-        self.bohr=0.529177210
-        self.hartree=27.211385
-        self.rydberg=13.605692
+        
         
         self.run_post_process=True
 
     def set_run_post_process(self,post_process):
         self.run_post_process=post_process
         
-    def run_calculation(self):
+    def run_calculation(self,save_post_process=True):
         if self.postprocess:
             self.dft_job.show_error('DFT_CALC','cannot run calculation in post process mode')
             return 0
@@ -53,7 +52,9 @@ class calculator:
             
         if self.run_post_process:
             self.post_process()
-    
+            if save_post_process:
+                pp_fname=self.dft_job.make_fname_sysinfo('dft_post_process')
+                interface.pickle_save(self.dft_job.post_process_dir+pp_fname, [self])
     
     def get_maindir(self):
         return self.dft_job.get_maindir()

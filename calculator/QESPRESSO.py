@@ -15,6 +15,7 @@ import os.path
 from DFT_KIT.core import general_tool
 from DFT_KIT.core import env_parm
 from DFT_KIT.core import calculator
+from DFT_KIT.core import physics
 
 QES_control_flags='calculation  title   verbosity   restart_mode   wf_collect   nstep   iprint   tstress   tprnfor   dt   wfcdir   lkpoint_dir   max_seconds   etot_conv_thr   forc_conv_thr   disk_io   tefield   dipfield   lelfield   nberrycyc   lorbm   lberry   gdir   nppstr'.split()
 QES_system_flags='ibrav   celldm   A   B   C   cosAB   cosAC   cosBC   nbnd   tot_charge   tot_magnetization   starting_magnetization   ecutwfc   ecutrho   ecutfock   nr1   nr2   nr3   nr1s   nr2s   nr3s   nosym   nosym_evc   noinv   no_t_rev   force_symmorphic   use_all_frac   occupations   one_atom_occupations   starting_spin_angle   degauss   smearing   nspin   noncolin   ecfixed   qcutz   q2sigma   input_dft   exx_fraction   screening_parameter   exxdiv_treatment   x_gamma_extrapolation   ecutvcut   nqx1   nqx2   nqx3   lda_plus_u   lda_plus_u_kind   Hubbard_U   Hubbard_J0   Hubbard_alpha   Hubbard_beta   Hubbard_J(i,ityp)   starting_ns_eigenvalue(m,ispin,I)   U_projection_type   edir   emaxpos   eopreg   eamp   angle1   angle2   constrained_magnetization   fixed_magnetization   lambda   report   lspinorb   assume_isolated   esm_bc   esm_w   esm_efield   esm_nfit   vdw_corr   london   london_s6   london_rcut   xdm   xdm_a1   xdm_a2'.split()
@@ -221,6 +222,7 @@ class calculator_QESPRESSO(calculator.calculator):
         
         
     def post_process(self):
+        self.qes_vars={}
         self.qespresso_post_process_xml(self.dft_job.sys_info['qes_prefix']+'.save/' ,'data-file.xml')
         if os.path.isfile(self.dft_job.sys_info['qes_fname']+'.pwx.out'):
             self.qespresso_post_process_outfile(self.dft_job.sys_info['qes_fname']+'.pwx.out')
@@ -235,8 +237,8 @@ class calculator_QESPRESSO(calculator.calculator):
         self.output['final_positions']=np.array(self.qes_vars['atom_pos'])
 
         #Energy:
-        self.output['total_energy']=self.qes_vars['tot_energy']*self.rydberg
-        
+        self.output['total_energy']=self.qes_vars['tot_energy']*physics.rydberg
+        self.output['fermi_energy']=self.qes_vars['fermi_energy']*physics.rydberg
         
         
         #eigenvalues/bands
@@ -322,17 +324,17 @@ class calculator_QESPRESSO(calculator.calculator):
         
         root_cell=root.find('CELL')
         prim_vec_a1=root_cell.find('DIRECT_LATTICE_VECTORS/a1')
-        self.qes_vars['prim_a1']=self.bohr*general_tool.str_to_vec(prim_vec_a1.text.split())
+        self.qes_vars['prim_a1']=physics.bohr*general_tool.str_to_vec(prim_vec_a1.text.split())
         prim_vec_a2=root_cell.find('DIRECT_LATTICE_VECTORS/a2')
-        self.qes_vars['prim_a2']=self.bohr*general_tool.str_to_vec(prim_vec_a2.text.split())
+        self.qes_vars['prim_a2']=physics.bohr*general_tool.str_to_vec(prim_vec_a2.text.split())
         prim_vec_a3=root_cell.find('DIRECT_LATTICE_VECTORS/a3')
-        self.qes_vars['prim_a3']=self.bohr*general_tool.str_to_vec(prim_vec_a3.text.split())
+        self.qes_vars['prim_a3']=physics.bohr*general_tool.str_to_vec(prim_vec_a3.text.split())
         rec_vec_b1=root_cell.find('RECIPROCAL_LATTICE_VECTORS/b1')
-        self.qes_vars['rec_b1']=(1.0/self.bohr)*general_tool.str_to_vec(rec_vec_b1.text.split())
+        self.qes_vars['rec_b1']=(1.0/physics.bohr)*general_tool.str_to_vec(rec_vec_b1.text.split())
         rec_vec_b2=root_cell.find('RECIPROCAL_LATTICE_VECTORS/b2')
-        self.qes_vars['rec_b2']=(1.0/self.bohr)*general_tool.str_to_vec(rec_vec_b2.text.split())
+        self.qes_vars['rec_b2']=(1.0/physics.bohr)*general_tool.str_to_vec(rec_vec_b2.text.split())
         rec_vec_b3=root_cell.find('RECIPROCAL_LATTICE_VECTORS/b3')
-        self.qes_vars['rec_b3']=(1.0/self.bohr)*general_tool.str_to_vec(rec_vec_b3.text.split())
+        self.qes_vars['rec_b3']=(1.0/physics.bohr)*general_tool.str_to_vec(rec_vec_b3.text.split())
         
         root_ions=root.find('IONS')
         tmp=root_ions.find('NUMBER_OF_ATOMS')
@@ -343,7 +345,7 @@ class calculator_QESPRESSO(calculator.calculator):
         self.qes_vars['atom_pos']=[]
         for ind in range(1,self.qes_vars['num_atoms']+1):
             tmp=root_ions.find('ATOM.'+str(ind))
-            self.qes_vars['atom_pos'].append(self.bohr*general_tool.str_to_vec(tmp.attrib['tau'].split()))
+            self.qes_vars['atom_pos'].append(physics.bohr*general_tool.str_to_vec(tmp.attrib['tau'].split()))
         
         root_symmetries=root.find('SYMMETRIES')
         root_electric_field=root.find('ELECTRIC_FIELD')
@@ -389,7 +391,7 @@ class calculator_QESPRESSO(calculator.calculator):
         self.qes_vars['occupations']=np.zeros((self.qes_vars['num_bands'],self.qes_vars['num_kpts']))
         
         for indk in range(1,self.qes_vars['num_kpts']+1):
-            tmp=root_eigval.find('K-POINT.'+str(ind))
+            tmp=root_eigval.find('K-POINT.'+str(indk))
             subtmp=tmp.find('DATAFILE')
             eigxml=subtmp.attrib['iotk_link']
             

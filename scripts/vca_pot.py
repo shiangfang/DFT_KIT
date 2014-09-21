@@ -5,15 +5,16 @@ from DFT_KIT.core import env_parm
 
 ps_pot1='Bi.UPF'
 ps_pot2='Sb.UPF'
+ps_alloypot='Bi_Sb_Alloy'
 shell_pot1=3
 shell_pot2=3
 betas_pot1=3
 betas_pot2=3
-num_alloy=51
+num_alloy=11
 min_alloy=1.0
 max_alloy=0.0
 
-mix_add_info=[' <PP_ADDINFO>']
+mix_add_info=[' <PP_ADDINFO>\n']
 
 pot1_add_shell=[]
 pot1_add_beta=[]
@@ -22,13 +23,13 @@ f_=open(ps_pot1,'r')
 while True:
     line=f_.readline()
     if not line: break
-    if line.rfind('<ADDINFO>') > -1: 
+    if line.rfind('<PP_ADDINFO>') > -1: 
         for ind in range(0,shell_pot1):
             tmp=f_.readline()
             pot1_add_shell.append(tmp)
             mix_add_info.append(tmp)
         for ind in range(0,betas_pot1):
-            f_.readline()
+            tmp=f_.readline()
             pot1_add_beta.append(tmp)
             mix_add_info.append(tmp)
         pot1_add_mesh=f_.readline()
@@ -42,10 +43,10 @@ f_=open(ps_pot2,'r')
 while True:
     line=f_.readline()
     if not line: break
-    if line.rfind('<ADDINFO>') > -1: 
-        for ind in range(0,shell_pot1):
+    if line.rfind('<PP_ADDINFO>') > -1: 
+        for ind in range(0,shell_pot2):
             pot2_add_shell.append(f_.readline())
-        for ind in range(0,betas_pot1):
+        for ind in range(0,betas_pot2):
             tmp=f_.readline()
             pot2_add_beta.append(tmp)
             mix_add_info.append(tmp)
@@ -65,10 +66,16 @@ for ind in range(0,num_alloy):
     os.system(env_parm.virtualxcmd + ' < virtualinput')
     #os.system('cat NewPseudo.UPF ADDINFO.UPF > bi_sb_alloy_LDA_' + str(ind) + '.UPF')
     f_=open('NewPseudo.UPF','a')
+    #print(mix_add_info)
     for line in mix_add_info:
         f_.write(line)
+    f_.write('\n') 
     f_.close()
+    os.system('mv NewPseudo.UPF ' + ps_alloypot +'_'+ str(ind) + '.UPF')
+    
     
 
 os.system('rm virtualinput')
-os.system('rm NewPseudo.UPF')
+#os.system('rm NewPseudo.UPF')
+
+

@@ -64,6 +64,6 @@ def run_post_wannier90(jm_mode,f_in,num_cpu=1):
 
 #SIESTA
 siesta_pseudo_dir='/home1/03051/sfang/Pseudo_Potential/SIESTA/'
-def run_siesta():
+def run_siesta(num_cpu=1):
     pass
 

@@ -22,7 +22,7 @@ Sb_exp_1={'lattice_constant':4.489,'angle':(57.0+14.0/60.0)*np.pi/180.0,'rhom_u'
 Sb_exp_2={'lattice_constant':4.4898,'angle':(57.233)*np.pi/180.0,'rhom_u':0.23362}
 
 # crystal setting
-Sb=element.element('Sb',121.760,51,5,vasp_pot='Sb',qes_pot='Sb.UPF')
+Sb_exp=element.element('Sb',121.760,51,5,vasp_pot='Sb',qes_pot='Sb.UPF',rhom_length=4.489,angle=0.9989,rhom_u=0.2336)
 Sb_d=element.element('Sb',121.760,51,15,vasp_pot='Sb_d',qes_pot='Sb_d.UPF')
 
 # DFT setting
@@ -58,12 +58,19 @@ Bi_vasp_slab_nscf_soi={'ISTART':'0','ICHARG':'11','ENCUT':'250','EDIFF':'1E-4','
 Bi_vasp_crystal_scf={'ISTART':'0','ENCUT':'250','EDIFF':'1E-6','ISMEAR':'-5','SIGMA':'0.2','LMAXMIX':'4'}
 Bi_vasp_crystal_nscf_soi={'ISTART':'0','ICHARG':'11','ENCUT':'250','EDIFF':'1E-6','GGA_COMPAT':'.FALSE.','ISYM':'0','SAXIS':'0 0 1','LSORBIT':'.TRUE.','LMAXMIX':'4','MAGMOM':True}
 
-Bi_qespresso_crystal_scf={'noncolin':'.true.','lspinorb':'.true.','ecutwfc':'20.0'}
+Bi_qespresso_crystal_scf={'noncolin':'.true.','lspinorb':'.true.','ecutwfc':'25.0','occupations':"'smearing'",'smearing':"'marzari-vanderbilt'",'degauss':'0.005'}
+Bi_qespresso_crystal_bands={'noncolin':'.true.','lspinorb':'.true.','ecutwfc':'25.0'}
+
 Bi_qespresso_crystal_nscf_soi={}
 Bi_qespresso_slab_scf={'mixing mode':'local-TF'}
 Bi_qespresso_slab_nscf_soi={}
 
 Bi_wannier90={'num_wann':'16','num_iter':'200','dis_num_iter':'500','dis_win_min':'-10','dis_win_max':'30','dis_froz_min':'-10','dis_froz_max':'10','length_unit':'Ang','spinors':'true','hr_plot':'true','write_xyz':'true','write_r2mn':'true'}    
 Bi_pw2wan={'write_amn':'.true.','write_spn':'.true.','write_mmn':'.true.','write_unk':'.false.'}
+
+#Alloy for Bi/Sb:
+Bi_Sb_qespresso_crystal_scf={'noncolin':'.true.','lspinorb':'.true.','ecutwfc':'25.0','occupations':"'smearing'",'smearing':"'marzari-vanderbilt'",'degauss':'0.005'}
+
+
 
 
