@@ -8,8 +8,10 @@ import os
 import sys
 import shutil
 
+from DFT_KIT.interface import interface
+
 class job:
-    def __init__(self,subdir=True,job_manager_mode=False,write_post_process=True,system='DFT simulation',dir_task_prefix='task_',verbosity=True,**parms):
+    def __init__(self,subdir=True,job_manager_mode=False,write_post_process=True,save_output_data=True,system='DFT simulation',dir_task_prefix='task_',verbosity=True,**parms):
         self.root_dir=os.getcwd()+'/'
         self.subdir=subdir #make subdir structure
         self.all_dir=[]
@@ -36,9 +38,11 @@ class job:
         self.opt_parm={'cpu':1}
         
         self.post_process_dir=''
+        self.write_post_process=write_post_process
         if write_post_process:
             self.post_process_dir=self.root_dir+'dft_post_process/'
-            os.mkdir(self.post_process_dir)
+            if not os.path.exists(self.post_process_dir):
+                os.mkdir(self.post_process_dir)
             
         #include prefix, filename, etc.
         self.sys_info={'description':'DFT simulation with DFT_KIT',
@@ -47,6 +51,19 @@ class job:
                        'qes_fname':'qespresso',
                        'siesta_prefix':'siesta',
                        'wan90_seedname':'wan90'}
+        
+        self.save_output_data=save_output_data
+        self.save_output=[]
+        
+        
+    def record_save_output(self,data):
+        self.save_output.append(data) 
+    
+    def end_job(self,save_output_fname='dft_job_output'):
+        if self.save_output_data:
+            self.show('job', 'save output data record')
+            interface.pickle_save(self.post_process_dir+self.save_output_fname, self.save_output)
+            
         
     def back_to_root(self):
         os.chdir(self.root_dir)

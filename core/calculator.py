@@ -29,9 +29,18 @@ class calculator:
         self.output={}
         self.reset_simulation_data()
         
-        
-        
         self.run_post_process=True
+        self.save_output_data={}
+        
+    def dump_save_output(self):
+        self.dft_job.record_save_output(self.save_output_data)
+        
+    def save_output(self,parms_list):
+        # parm_list in the form: ['aa':'new name',bb:...,cc:...]
+        for parm in parms_list:
+            if parm in self.output:
+                self.save_output_data[parms_list[parm]]=self.output[parm]
+            
 
     def set_run_post_process(self,post_process):
         self.run_post_process=post_process
@@ -42,6 +51,7 @@ class calculator:
             return 0
         #generate necessary files
         self.generate_files()
+        self.save_output_data={}
         
         #run program including the commands
         for cmd in self.pre_commands:

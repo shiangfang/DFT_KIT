@@ -44,16 +44,16 @@ def run_vasp_gamma(jm_mode,num_cpu=1):
 #QESPRESSO
 qespresso_pseudo_dir='/home1/03051/sfang/Pseudo_Potential/QESPRESSO/'
 virtualxcmd='/opt/apps/intel13/mvapich2_1_9/espresso/5.0.3/upftools/virtual.x '
-espresso51_path='/home1/03051/sfang/espresso-5.1/bin/'
-espresso50_path='/opt/apps/intel13/mvapich2_1_9/espresso/5.0.3/bin/'
-espresso_path=espresso50_path
+new_espresso_path='/home1/03051/sfang/espresso/bin/'
+old_espresso_path='/opt/apps/intel13/mvapich2_1_9/espresso/5.0.3/bin/'
+
 
 def run_qes_pwx(jm_mode,f_in,num_cpu=1):
     #os.system('pw.x <  ' + f_in + ' > ' + f_out)
     if jm_mode:
-        os.system('ibrun ' +espresso_path+ 'pw.x <  ' + f_in+'.pwx.in' +' > ' + f_in +'.pwx.out')
+        os.system('ibrun pw.x <  ' + f_in+'.pwx.in' +' > ' + f_in +'.pwx.out')
     else:
-        os.system(espresso_path+'pw.x <  ' + f_in +'.pwx.in' +' > ' + f_in +'.pwx.out')
+        os.system('pw.x <  ' + f_in +'.pwx.in' +' > ' + f_in +'.pwx.out')
     
 #pw2wannier90
 def run_qes_pw2wan(jm_mode,f_in,num_cpu=1):

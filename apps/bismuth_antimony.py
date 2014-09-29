@@ -7,8 +7,11 @@ import os
 import sys
 
 from DFT_KIT.core import job, kpoint, element, crystal_3D
-from DFT_KIT.calculator import VASP
 from DFT_KIT.apps import crystal_structure
+
+#Structure for describing the element:
+# crystal
+#APE, VASP, 
 
 #element.element:
 # parameters for running VASP and Qespresso
@@ -16,6 +19,10 @@ from DFT_KIT.apps import crystal_structure
 
 
 # Antimony
+#APE:
+Sb_ape={'Title':'Bismuth','WaveEquation':'dirac','Orbitals':["\"Kr\"","4  |  2  |  10","5  |  0  |  2","5  |  1  |  3"],'PPComponents':["5 | 0 | 0.5  | 1.45 | ham","5 | 1 | 0.5  | 1.45 | ham","5 | 1 | 1.5  | 1.6 | ham"]}
+
+
 #Phys. Rev. 141, 562
 Sb_exp_1={'lattice_constant':4.489,'angle':(57.0+14.0/60.0)*np.pi/180.0,'rhom_u':0.2336}
 #Phys Rev. B 41,11827
@@ -38,6 +45,10 @@ Sb_wannier90={}
 
 
 # Bismuth
+
+#APE
+Bi_ape={'Title':'Bismuth','WaveEquation':'dirac','Orbitals':["\"Xe\"","4 | 3 | 14","5 | 2 | 10","6 | 0 | 2","6 | 1 | 3"],'PPComponents':["6 | 0 | 0.5  | 1.6 | ham","6 | 1 | 0.5  | 1.6 | ham","6 | 1 | 1.5  | 1.8 | ham"]}
+ 
 #experimental value at 4.2K cf. PRB 56, 6620. ->careful about the units a.u. vs Angstron
 # Phys. Rev. 166, 643
 Bi_exp_1={'lattice_constant':4.7212,'angle':(57.0+19.0/60.0)*np.pi/180.0,'rhom_u':0.23407}

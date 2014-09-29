@@ -43,6 +43,13 @@ class calculator_VASP(calculator.calculator):
         self.xc=xc
         self.vasp_vars={}
         self.run_vasp_mode=0
+        
+    def vasp_save_output(self,parms_list):
+        # parm_list in the form: ['aa':'new name',bb:...,cc:...]
+        for parm in parms_list:
+            if parm in self.vasp_vars:
+                self.save_output_data[parms_list[parm]]=self.vasp_vars[parm]
+ 
     
     def set_run_vasp_mode(self,mode):
         self.run_vasp_mode=mode

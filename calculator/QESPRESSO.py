@@ -81,6 +81,12 @@ class calculator_QESPRESSO(calculator.calculator):
             self.set_parm('noncolin', '.true.')
             self.set_parm('lspinorb', '.true.')
             
+    def qes_save_output(self,parms_list):
+        # parm_list in the form: ['aa':'new name',bb:...,cc:...]
+        for parm in parms_list:
+            if parm in self.qes_vars:
+                self.save_output_data[parms_list[parm]]=self.qes_vars[parm]
+ 
     
     def run_main(self):
         env_parm.run_qes_pwx(self.dft_job.job_mamanger_mode,self.dft_job.sys_info['qes_fname'])
@@ -223,6 +229,18 @@ class calculator_QESPRESSO(calculator.calculator):
         
     def post_process(self):
         self.qes_vars={}
+        self.qes_vars['sc_tot_energy']=[]
+        self.qes_vars['sc_harrisf_energy']=[]
+        self.qes_vars['sc_energy_accu']=[]
+        
+        self.qes_vars['tot_energy']=0.0
+        self.qes_vars['harrisf_energy']=0.0
+        self.qes_vars['energy_accu']=0.0
+        self.qes_vars['onee_energy']=0.0
+        self.qes_vars['hartree_energy']=0.0
+        self.qes_vars['xc_energy']=0.0
+        self.qes_vars['ewald_energy']=0.0
+        
         self.qespresso_post_process_xml(self.dft_job.sys_info['qes_prefix']+'.save/' ,'data-file.xml')
         if os.path.isfile(self.dft_job.sys_info['qes_fname']+'.pwx.out'):
             self.qespresso_post_process_outfile(self.dft_job.sys_info['qes_fname']+'.pwx.out')
@@ -245,21 +263,13 @@ class calculator_QESPRESSO(calculator.calculator):
         
     def qespresso_post_process_outfile(self,fname):
         f_=open(fname,'r')
-        self.qes_vars['sc_tot_energy']=[]
-        self.qes_vars['sc_harrisf_energy']=[]
-        self.qes_vars['sc_energy_accu']=[]
+
         iteration=0
         
         end_scf=False
         calc_scf=False
         calc_band=False
-        self.qes_vars['tot_energy']=0.0
-        self.qes_vars['harrisf_energy']=0.0
-        self.qes_vars['energy_accu']=0.0
-        self.qes_vars['onee_energy']=0.0
-        self.qes_vars['hartree_energy']=0.0
-        self.qes_vars['xc_energy']=0.0
-        self.qes_vars['ewald_energy']=0.0
+        
         
         while True:
             tmpstr=f_.readline()

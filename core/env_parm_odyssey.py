@@ -8,6 +8,11 @@ import os
 modules_load=[]
 batch_cmd='sbatch '
 
+#APE
+def run_ape(jm_mode,f_in,num_cpu=1):
+    os.system('/n/home09/sfang/APE/bin/ape < ' +f_in)
+
+
 #VASP
 vasp_pseudo_dir='/n/home09/sfang/Pseudo_Potential/VASP/'
 def run_vasp_std(jm_mode,num_cpu=1):
@@ -37,13 +42,16 @@ def run_vasp_gamma(jm_mode,num_cpu=1):
 #QESPRESSO
 qespresso_pseudo_dir='/n/home09/sfang/Pseudo_Potential/QESPRESSO/'
 virtualxcmd='/n/sw/centos6/espresso-5.0.2/upftools/virtual.x '
+espresso51_path='/n/home09/sfang/espresso-5.1/bin/'
+espresso50_path='/n/sw/centos6/espresso-5.0.2/bin/'
+espresso_path=espresso50_path
 
 def run_qes_pwx(jm_mode,f_in,num_cpu=1):
     #os.system('pw.x <  ' + f_in + ' > ' + f_out)
     if jm_mode:
-        os.system('mpirun -np ' + str(num_cpu)+ ' pw.x <  ' + f_in+'.pwx.in' +' > ' + f_in +'.pwx.out')
+        os.system('mpirun -np ' + str(num_cpu)+ ' '+ espresso_path +'pw.x <  ' + f_in+'.pwx.in' +' > ' + f_in +'.pwx.out')
     else:
-        os.system('pw.x <  ' + f_in+'.pwx.in' +' > ' + f_in +'.pwx.out')
+        os.system(espresso_path+'pw.x <  ' + f_in+'.pwx.in' +' > ' + f_in +'.pwx.out')
     
 #pw2wannier90
 def run_qes_pw2wan(jm_mode,f_in,num_cpu=1):
