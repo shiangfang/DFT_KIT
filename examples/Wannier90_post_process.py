@@ -14,13 +14,13 @@ from DFT_KIT.apps import bismuth_antimony
 
 [input_parm,opt_parm]=interface_script.init_simulation(1)
 
-test_job=job.job(subdir=False)
-test_job.sys_info['wan90_seedname']=input_parm[0]
-test_wan90=Wannier90.calculator_Wannier90(True,test_job,None,None)
-test_wan90.load_parm(False, bismuth_antimony.Bi_wannier90)
-test_wan90.add_projections(['random','Bi: l=0;l=1'])
-test_wan90.post_process()
-test_wan90.save_post_process()
+dft_job=job.job(subdir=False)
+dft_job.sys_info['wan90_seedname']=input_parm[0]
+dft_wan90=Wannier90.calculator_Wannier90(True,dft_job,None,None)
+dft_wan90.load_parm(False, bismuth_antimony.Bi_wannier90)
+#dft_wan90.add_projections(['random','Bi: l=0;l=1'])
+dft_wan90.post_process()
+dft_wan90.save_post_process()
 
 
 

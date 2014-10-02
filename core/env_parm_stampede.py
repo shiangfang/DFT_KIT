@@ -57,7 +57,7 @@ def run_qes_pwx(jm_mode,f_in,num_cpu=1):
     
 #pw2wannier90
 def run_qes_pw2wan(jm_mode,f_in,num_cpu=1):
-    os.system('~/wannier90/bin/pw2wannier90.x < ' +f_in)
+    os.system('~/wannier90/bin/pw2wannier90.x < ' +f_in + '.pw2wan.in')
     
 #Wannier90
 def run_wannier90(jm_mode,f_in,pp_mode,num_cpu=1):

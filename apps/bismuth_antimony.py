@@ -36,10 +36,16 @@ Sb_d=element.element('Sb',121.760,51,15,vasp_pot='Sb_d',qes_pot='Sb_d.UPF')
 Sb_vasp_scf={}
 Sb_vasp_nscf_soi={}
 
-Sb_qespresso_scf={}
-Sb_qespresso_nscf_soi={}
+Sb_qespresso_crystal_scf={'noncolin':'.true.','lspinorb':'.true.','ecutwfc':'25.0','occupations':"'smearing'",'smearing':"'marzari-vanderbilt'",'degauss':'0.005'}
+Sb_qespresso_crystal_bands={'noncolin':'.true.','lspinorb':'.true.','ecutwfc':'25.0'}
 
-Sb_wannier90={}
+Sb_qespresso_crystal_nscf_soi={}
+Sb_qespresso_slab_scf={'mixing mode':'local-TF'}
+Sb_qespresso_slab_nscf_soi={}
+
+Sb_wannier90={'num_wann':'16','num_iter':'200','dis_num_iter':'500','dis_win_min':'-10','dis_win_max':'30','dis_froz_min':'-10','dis_froz_max':'10','length_unit':'Ang','spinors':'true','hr_plot':'true','write_xyz':'true','write_r2mn':'true'}    
+Sb_pw2wan={'write_amn':'.true.','write_spn':'.true.','write_mmn':'.true.','write_unk':'.false.'}
+
 
 
 
