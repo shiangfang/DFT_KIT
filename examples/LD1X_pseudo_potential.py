@@ -14,10 +14,12 @@ from DFT_KIT.apps import bismuth_antimony
 
 
 [input_parm,opt_parm]=interface_script.init_simulation(0)
+os.chdir('/Users/shiangfang/Shiang DrobBox/Dropbox/Physics Research/Tim Kaxiras Group/temp')
 
 dft_job=job.job(subdir=False,job_manager_mode=False,write_post_process=False)
-dft_calc=Pseudo_Potential.calculator_APE(dft_job,bismuth_antimony.Bi_exp)
-dft_calc.load_parm(False,bismuth_antimony.Bi_ape)
-dft_calc.generate_files()
+dft_calc=Pseudo_Potential.calculator_LD1X(True,dft_job,None)
+dft_calc.read_UPF('Sb.UPF')
+
+print(dft_calc.upf_data['PP_SPIN_ORB'])
 
 

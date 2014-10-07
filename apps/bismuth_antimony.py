@@ -55,6 +55,9 @@ Sb_pw2wan={'write_amn':'.true.','write_spn':'.true.','write_mmn':'.true.','write
 #APE
 Bi_ape={'Title':'Bismuth','WaveEquation':'dirac','Orbitals':["\"Xe\"","4 | 3 | 14","5 | 2 | 10","6 | 0 | 2","6 | 1 | 3"],'PPComponents':["6 | 0 | 0.5  | 1.6 | ham","6 | 1 | 0.5  | 1.6 | ham","6 | 1 | 1.5  | 1.8 | ham"]}
  
+#LD1X
+Bi_ld1x={'zel':'2','config':"'[Xe] 4f14 5d10 6s2 6p3'",'lloc':'-1'}
+ 
 #experimental value at 4.2K cf. PRB 56, 6620. ->careful about the units a.u. vs Angstron
 # Phys. Rev. 166, 643
 Bi_exp_1={'lattice_constant':4.7212,'angle':(57.0+19.0/60.0)*np.pi/180.0,'rhom_u':0.23407}

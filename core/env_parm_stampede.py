@@ -54,7 +54,12 @@ def run_qes_pwx(jm_mode,f_in,num_cpu=1):
         os.system('ibrun ' +espresso_path+ 'pw.x <  ' + f_in+'.pwx.in' +' > ' + f_in +'.pwx.out')
     else:
         os.system(espresso_path+'pw.x <  ' + f_in +'.pwx.in' +' > ' + f_in +'.pwx.out')
-    
+
+#LD1X
+def run_ld1x(jm_mode,f_in,num_cpu=1):
+    os.system(espresso_path+'ld1.x < ' +f_in + ' > ' +f_in +'.out')
+ 
+
 #pw2wannier90
 def run_qes_pw2wan(jm_mode,f_in,num_cpu=1):
     os.system('~/wannier90/bin/pw2wannier90.x < ' +f_in + '.pw2wan.in')

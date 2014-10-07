@@ -12,7 +12,6 @@ batch_cmd='sbatch '
 def run_ape(jm_mode,f_in,num_cpu=1):
     os.system('/n/home09/sfang/APE/bin/ape < ' +f_in)
 
-
 #VASP
 vasp_pseudo_dir='/n/home09/sfang/Pseudo_Potential/VASP/'
 def run_vasp_std(jm_mode,num_cpu=1):
@@ -52,6 +51,10 @@ def run_qes_pwx(jm_mode,f_in,num_cpu=1):
         os.system('mpirun -np ' + str(num_cpu)+ ' '+ espresso_path +'pw.x <  ' + f_in+'.pwx.in' +' > ' + f_in +'.pwx.out')
     else:
         os.system(espresso_path+'pw.x <  ' + f_in+'.pwx.in' +' > ' + f_in +'.pwx.out')
+
+#LD1X
+def run_ld1x(jm_mode,f_in,num_cpu=1):
+    os.system(espresso_path+'ld1.x < ' +f_in + ' > ' +f_in +'.out')
     
 #pw2wannier90
 def run_qes_pw2wan(jm_mode,f_in,num_cpu=1):
