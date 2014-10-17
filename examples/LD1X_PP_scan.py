@@ -14,7 +14,7 @@ from DFT_KIT.apps import bismuth_antimony
 
 [input_parm,opt_parm]=interface_script.init_simulation(0)
 dft_job=job.job(subdir=False,job_manager_mode=False,write_post_process=False)
-dft_calc=Pseudo_Potential.calculator_LD1X(True,dft_job,None)
+dft_calc=Pseudo_Potential.calculator_LD1X(False,dft_job,None)
 dft_calc.load_parm(False,bismuth_antimony.Bi_ld1x)
 
 numrc=16
@@ -36,13 +36,13 @@ for indrc in allrc:
                 newdir=root_dir+'task_'+str(ind)+'/'
                 os.mkdir(newdir)
                 os.chdir(newdir)
-                
+                dft_calc.set_parm('rcloc',str(indrc))
                 tmp=[]
-                tmp.append('6S 1 0 2.00 0.00 '+ str(inds1)+' '+str(inds1) +'0.5')
-                tmp.append('6P 2 1 2.00 0.00 '+ str(indp1)+' '+str(indp1) +'0.5')
-                tmp.append('6P 2 1 0.00 0.45 '+ str(indp1)+' '+str(indp1) +'0.5')
-                tmp.append('6P 2 1 1.00 0.00 '+ str(indp2)+' '+str(indp2) +'1.5')
-                tmp.append('6P 2 1 0.00 0.45 '+ str(indp2)+' '+str(indp2) +'1.5')
+                tmp.append('6S 1 0 2.00 0.00 '+ str(inds1)+' '+str(inds1) +' 0.5')
+                tmp.append('6P 2 1 2.00 0.00 '+ str(indp1)+' '+str(indp1) +' 0.5')
+                tmp.append('6P 2 1 0.00 0.45 '+ str(indp1)+' '+str(indp1) +' 0.5')
+                tmp.append('6P 2 1 1.00 0.00 '+ str(indp2)+' '+str(indp2) +' 1.5')
+                tmp.append('6P 2 1 0.00 0.45 '+ str(indp2)+' '+str(indp2) +' 1.5')
                 dft_calc.pp_card=tmp
                 
                 dft_calc.run_calculation()

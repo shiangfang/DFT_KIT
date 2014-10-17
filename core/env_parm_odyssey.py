@@ -12,6 +12,15 @@ batch_cmd='sbatch '
 def run_ape(jm_mode,f_in,num_cpu=1):
     os.system('/n/home09/sfang/APE/bin/ape < ' +f_in)
 
+
+#ELK
+elk_sppath="'../../species/'"
+def run_elk(jm_mode,f_in,num_cpu=1):
+    os.system('/n/home09/sfang/elk-2.3.22/bin/elk')
+
+def run_spacegroup(jm_mode,f_in,num_cpu=1):
+    os.system('/n/home09/sfang/elk-2.3.22/bin/spacegroup')
+
 #VASP
 vasp_pseudo_dir='/n/home09/sfang/Pseudo_Potential/VASP/'
 def run_vasp_std(jm_mode,num_cpu=1):

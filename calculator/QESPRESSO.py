@@ -95,6 +95,16 @@ class calculator_QESPRESSO(calculator.calculator):
         self.qes_generate_pw2wan()
         env_parm.run_qes_pw2wan(self.dft_job.job_mamanger_mode, self.dft_job.sys_info['qes_fname'])
     
+    def run_ppx(self):
+        pass
+    
+    def qes_generate_ppx(self):
+        f_=open('qes.ppx.in','w')
+        
+        
+        f_.close()
+    
+    
     def qes_generate_pw2wan(self):
         f_=open(self.dft_job.sys_info['qes_fname']+'.pw2wan.in','w')
         f_.write(' &inputpp\n')
@@ -256,7 +266,7 @@ class calculator_QESPRESSO(calculator.calculator):
 
         #Energy:
         self.output['total_energy']=self.qes_vars['tot_energy']*physics.rydberg
-        self.output['fermi_energy']=self.qes_vars['fermi_energy']*physics.rydberg
+        self.output['fermi_energy']=self.qes_vars['fermi_energy']*physics.hartree
         
         
         #eigenvalues/bands

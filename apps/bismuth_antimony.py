@@ -35,6 +35,9 @@ Sb_d=element.element('Sb',121.760,51,15,vasp_pot='Sb_d',qes_pot='Sb_d.UPF')
 # DFT setting
 Sb_vasp_scf={}
 Sb_vasp_nscf_soi={}
+Sb_vasp_crystal_scf={'ISTART':'0','ENCUT':'250','EDIFF':'1E-6','ISMEAR':'-5','SIGMA':'0.2','LMAXMIX':'4','LREAL':'Auto'}
+Sb_vasp_crystal_nscf_soi={'ISTART':'0','ICHARG':'11','ENCUT':'250','EDIFF':'1E-6','GGA_COMPAT':'.FALSE.','ISYM':'0','SAXIS':'0 0 1','LSORBIT':'.TRUE.','LMAXMIX':'4','MAGMOM':True,'LREAL':'Auto'}
+
 
 Sb_qespresso_crystal_scf={'noncolin':'.true.','lspinorb':'.true.','ecutwfc':'25.0','occupations':"'smearing'",'smearing':"'marzari-vanderbilt'",'degauss':'0.005'}
 Sb_qespresso_crystal_bands={'noncolin':'.true.','lspinorb':'.true.','ecutwfc':'25.0'}
@@ -56,7 +59,7 @@ Sb_pw2wan={'write_amn':'.true.','write_spn':'.true.','write_mmn':'.true.','write
 Bi_ape={'Title':'Bismuth','WaveEquation':'dirac','Orbitals':["\"Xe\"","4 | 3 | 14","5 | 2 | 10","6 | 0 | 2","6 | 1 | 3"],'PPComponents':["6 | 0 | 0.5  | 1.6 | ham","6 | 1 | 0.5  | 1.6 | ham","6 | 1 | 1.5  | 1.8 | ham"]}
  
 #LD1X
-Bi_ld1x={'zel':'2','config':"'[Xe] 4f14 5d10 6s2 6p3'",'lloc':'-1'}
+Bi_ld1x={'title':"'Bi'",'zed':'83','rel':'2','config':"'[Xe] 4f14 5d10 6s2 6p3'",'lloc':'-1','file_pseudopw':"'Bi.UPF'",'dft':"'LDA'"}
  
 #experimental value at 4.2K cf. PRB 56, 6620. ->careful about the units a.u. vs Angstron
 # Phys. Rev. 166, 643
@@ -75,8 +78,8 @@ Bi_d=element.element('Bi',208.9804,83,15,vasp_pot='Bi_d',qes_pot='Bi_d.UPF')
 # DFT setting
 Bi_vasp_slab_scf={'ISTART':'0','ENCUT':'250','EDIFF':'1E-4','ISMEAR':'-5','SIGMA':'0.2','LMAXMIX':'4','LREAL':'Auto','AMIN':'0.01'}
 Bi_vasp_slab_nscf_soi={'ISTART':'0','ICHARG':'11','ENCUT':'250','EDIFF':'1E-4','GGA_COMPAT':'.FALSE.','ISYM':'0','SAXIS':'0 0 1','LSORBIT':'.TRUE.','LMAXMIX':'4','MAGMOM':True,'LREAL':'Auto','AMIN':'0.01'}
-Bi_vasp_crystal_scf={'ISTART':'0','ENCUT':'250','EDIFF':'1E-6','ISMEAR':'-5','SIGMA':'0.2','LMAXMIX':'4'}
-Bi_vasp_crystal_nscf_soi={'ISTART':'0','ICHARG':'11','ENCUT':'250','EDIFF':'1E-6','GGA_COMPAT':'.FALSE.','ISYM':'0','SAXIS':'0 0 1','LSORBIT':'.TRUE.','LMAXMIX':'4','MAGMOM':True}
+Bi_vasp_crystal_scf={'ISTART':'0','ENCUT':'250','EDIFF':'1E-6','ISMEAR':'-5','SIGMA':'0.2','LMAXMIX':'4','LREAL':'Auto'}
+Bi_vasp_crystal_nscf_soi={'ISTART':'0','ICHARG':'11','ENCUT':'250','EDIFF':'1E-6','GGA_COMPAT':'.FALSE.','ISYM':'0','SAXIS':'0 0 1','LSORBIT':'.TRUE.','LMAXMIX':'4','MAGMOM':True,'LREAL':'Auto'}
 
 Bi_qespresso_crystal_scf={'noncolin':'.true.','lspinorb':'.true.','ecutwfc':'25.0','occupations':"'smearing'",'smearing':"'marzari-vanderbilt'",'degauss':'0.005'}
 Bi_qespresso_crystal_bands={'noncolin':'.true.','lspinorb':'.true.','ecutwfc':'25.0'}
