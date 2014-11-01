@@ -372,8 +372,15 @@ class calculator_VASP(calculator.calculator):
         
         root_cal_projected=root_cals.find("projected/array/set")
         data_['PROJECT_BAND']=[]
+        data_['PROJECT_BAND_FIELDS']=[]
+        root_cal_projected_fields=root_cals.findall("projected/array/field")
+        if root_cal_projected_fields is not None:
+            for item_field in root_cal_projected_fields:
+                data_['PROJECT_BAND_FIELDS'].append(item_field.text)
+        
         if root_cal_projected is not None:
             tmp_=[]
+            #[spin][k point][band][atom position]
             for proj_spin in root_cal_projected:
                 tmp_spin=[]
                 for kpt_ in proj_spin:
@@ -381,7 +388,11 @@ class calculator_VASP(calculator.calculator):
                     for band_ in kpt_:
                         tmp_band=[]
                         for proj_val in band_:
-                            tmp_band.append(proj_val.text.split())
+                            tmpt1=proj_val.text.split()
+                            tmpt2=[]
+                            for tmpt11 in tmpt1:
+                                tmpt2.append(float(tmpt11))
+                            tmp_band.append(tmpt2)
                         tmp_kpt.append(tmp_band)
                     tmp_spin.append(tmp_kpt)
                 tmp_.append(tmp_spin)

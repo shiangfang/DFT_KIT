@@ -210,17 +210,17 @@ class bcc_3D(crystal_3D):
         self.k_directions['Sigma']=['Gamma','N']
 
 class fcc_3D(crystal_3D):
-    def __init__(self,fcc_length,length_unit=1.0):
+    def __init__(self,cubic_length,length_unit=1.0):
         crystal_3D.__init__(self,length_unit)
-        self.set_lattice(fcc_length)
+        self.set_lattice(cubic_length)
         self.define_klabels()
         
-    def set_lattice(self,fcc_length):
-        a=fcc_length;
+    def set_lattice(self,cubic_length):
+        a=cubic_length*0.5;
         self.set_prim_vec(0, [0.0,a,a])
         self.set_prim_vec(1, [a,0.0,a])
         self.set_prim_vec(2, [a,a,0.0])
-        if fcc_length !=0.0:
+        if cubic_length !=0.0:
             self.evaluate_basic()
     def define_klabels(self):
         self.k_labels['X']=np.array([0.5,0.0,0.5])
